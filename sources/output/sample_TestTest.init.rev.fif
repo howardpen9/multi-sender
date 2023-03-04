@@ -2,21 +2,19 @@ SETCP0
 (:methods
   recv_internal: 
 
-  4: 
+  2: 
     0 PUSHINT
-    s0 s2 XCHG
+    s0 s1 XCHG
     NEWC
     STREF
-    s0 s2 XCHG
-    <{
-      ROTREV
-      STSLICER
-      32 STU
-    }> CALLREF
+    s0 s1 XCHG
+    s0 s1 XCHG
+    257 PUSHINT
+    STIX
     ENDC
 
   107886: 
-    4 CALLDICT
+    2 CALLDICT
 ) 19 DICTPUSHCONST
 DICTIGETJMPZ
 11 THROWARG
