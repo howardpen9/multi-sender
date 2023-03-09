@@ -2,10 +2,6 @@
 #pragma allow-post-modification;
 #pragma compute-asm-ltr;
 
-int __tact_my_balance() inline {
-    return pair_first(get_balance());
-}
-
 forall X -> X __tact_not_null(X x) inline { throw_if(128, null?(x)); return x; }
 
 global (int, slice, int, slice) __tact_context;
@@ -22,34 +18,10 @@ builder __tact_store_bool(builder b, int v) inline {
     return b;
 }
 
-(slice, slice) __tact_load_address(slice cs) inline {
-    slice raw = cs~load_msg_addr();
-    __tact_verify_address(raw);
-    return (cs, raw);
-}
-
 builder __tact_store_address(builder b, slice address) inline {
     __tact_verify_address(address);
     b = b.store_slice(address);
     return b;
-}
-
-int __tact_dict_get_int_int(cell d, int kl, int k, int vl) inline {
-    var (r, ok) = idict_get?(d, kl, k);
-    if (ok) {
-        return r~load_int(vl);
-    } else {
-        return null();
-    }
-}
-
-slice __tact_dict_get_int_slice(cell d, int kl, int k) inline {
-    var (r, ok) = idict_get?(d, kl, k);
-    if (ok) {
-        return r;
-    } else {
-        return null();
-    }
 }
 
 tuple __tact_string_builder_start(builder b) inline {
@@ -60,6 +32,10 @@ tuple __tact_string_builder_start_comment() inline {
     return __tact_string_builder_start(begin_cell().store_uint(0, 32));
 }
 
+tuple __tact_string_builder_start_string() inline {
+    return __tact_string_builder_start(begin_cell());
+}
+
 cell __tact_string_builder_end(tuple builders) inline {
     (builder b, tuple tail) = uncons(builders);
     cell c = b.end_cell();
@@ -68,6 +44,10 @@ cell __tact_string_builder_end(tuple builders) inline {
         c = b.store_ref(c).end_cell();
     }
     return c;
+}
+
+slice __tact_string_builder_end_slice(tuple builders) inline {
+    return __tact_string_builder_end(builders).begin_parse();
 }
 
 ((tuple), ()) __tact_string_builder_append(tuple builders, slice sc) inline_ref {
@@ -109,68 +89,38 @@ cell __tact_string_builder_end(tuple builders) inline {
     return ((builders), ());
 }
 
-(slice, ((int, cell, cell))) __gen_read_InputTON(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 3052599932);
-    var v'length = sc_0~load_int(257);
-    var v'user_list = sc_0~load_dict();
-    var v'sending_value = sc_0~load_dict();
-    return (sc_0, (v'length, v'user_list, v'sending_value));
+(slice, ((int))) __gen_read_$init$Echo(slice sc_0) inline {
+    var v'a = sc_0~load_int(257);
+    return (sc_0, (v'a));
 }
 
-(slice, ((int, slice, cell, cell))) __gen_read_InputJetton(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 1953149365);
-    var v'length = sc_0~load_int(257);
-    var v'jetton_address = sc_0~__tact_load_address();
-    var v'user_list = sc_0~load_dict();
-    var v'sending_value = sc_0~load_dict();
-    return (sc_0, (v'length, v'jetton_address, v'user_list, v'sending_value));
+tuple $__gen_Echo_init(int $a) impure inline_ref {
+    tuple $self = null();
+    return $self;
 }
 
-builder __gen_write_TestTest(builder build_0, (slice) v) inline {
-    var (v'owner) = v;
-    build_0 = __tact_store_address(build_0, v'owner);
-    return build_0;
-}
-
-(slice, ((slice))) __gen_read_TestTest(slice sc_0) inline {
-    var v'owner = sc_0~__tact_load_address();
-    return (sc_0, (v'owner));
-}
-
-(slice, ((slice))) __gen_read_$init$TestTest(slice sc_0) inline {
-    var v'owner = sc_0~__tact_load_address();
-    return (sc_0, (v'owner));
-}
-
-(slice) $__gen_TestTest_init(slice $owner) impure inline_ref {
-    var (($self'owner)) = (null());
-    $self'owner = $owner;
-    return ($self'owner);
-}
-
-(slice) __gen_load_TestTest() impure inline {
+tuple __gen_load_Echo() impure inline {
     slice $sc = get_data().begin_parse();
     __tact_context_sys = $sc~load_ref();
     int $loaded = $sc~load_int(1);
     if ($loaded) {
-        return $sc~__gen_read_TestTest();
+        return null();
     } else {
-        (slice owner) = $sc~__gen_read_$init$TestTest();
+        (int a) = $sc~__gen_read_$init$Echo();
         $sc.end_parse();
-        return $__gen_TestTest_init(owner);
+        return $__gen_Echo_init(a);
     }
 }
 
-() __gen_store_TestTest((slice) v) impure inline {
+() __gen_store_Echo(tuple v) impure inline {
     builder b = begin_cell();
     b = b.store_ref(__tact_context_sys);
     b = b.store_int(true, 1);
-    b = __gen_write_TestTest(b, v);
     set_data(b.end_cell());
 }
 
-;; String "Complete"
-slice __gen_str_339420938() asm "B{b5ee9c7241010101000a000010436f6d706c657465f8ddae36} B>boc <s PUSHSLICE";
+;; String "Hello, "
+slice __gen_str_591567833() asm "B{b5ee9c7241010101000900000e48656c6c6f2c20e8d197d2} B>boc <s PUSHSLICE";
 
 () $send((int, slice, int, int, cell, cell, cell) $params) impure inline_ref {
     var (($params'bounce, $params'to, $params'value, $params'mode, $params'body, $params'code, $params'data)) = $params;
@@ -215,6 +165,20 @@ slice __gen_str_339420938() asm "B{b5ee9c7241010101000a000010436f6d706c657465f8d
     send_raw_message($c, $params'mode);
 }
 
+((int, slice, int, int, cell, cell, cell)) __gen_constructor_SendParameters$bounce_to_value_mode_body(int bounce, slice to, int value, int mode, cell body) inline {
+    return (bounce, to, value, mode, body, null(), null());
+}
+
+() $reply(cell $body) impure inline_ref {
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    $send(__gen_constructor_SendParameters$bounce_to_value_mode_body(true, $ctx'sender, 0, (64 + 2), $body));
+}
+
+cell $__gen_Slice_asCell(slice $self) impure inline_ref {
+    var ($self) = $self;
+    return end_cell(store_slice(begin_cell(), $self));
+}
+
 cell $__gen_String_asComment(slice $self) impure inline_ref {
     var ($self) = $self;
     tuple $b = __tact_string_builder_start_comment();
@@ -222,49 +186,40 @@ cell $__gen_String_asComment(slice $self) impure inline_ref {
     return __tact_string_builder_end($b);
 }
 
-((int, slice, int, int, cell, cell, cell)) __gen_constructor_SendParameters$to_value_mode_bounce(slice to, int value, int mode, int bounce) inline {
-    return (bounce, to, value, mode, null(), null(), null());
+slice $__gen_Echo_hello(tuple $self, slice $src) impure inline_ref {
+    var ($self) = $self;
+    tuple $builder = __tact_string_builder_start_string();
+    $builder~__tact_string_builder_append(__gen_str_591567833());
+    $builder~__tact_string_builder_append($src);
+    return __tact_string_builder_end_slice($builder);
 }
 
-((int, slice, int, int, cell, cell, cell)) __gen_constructor_SendParameters$to_value_mode_bounce_body(slice to, int value, int mode, int bounce, cell body) inline {
-    return (bounce, to, value, mode, body, null(), null());
+_ $__gen_get_hello(slice $$src) method_id(115554) {
+    slice $src = $$src;
+    var self = __gen_load_Echo();
+    var res = $__gen_Echo_hello(self, $src);
+    return res;
 }
 
-(((slice)), ()) $__gen_TestTest_receive_InputTON((slice) $self, (int, cell, cell) $msg) impure inline {
-    var ($self'owner) = $self;
-    var ($msg'length, $msg'user_list, $msg'sending_value) = $msg;
-    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
-    int $msgValue = $ctx'value;
-    int $tonBalanceBeforeMsg = (__tact_my_balance() - $msgValue);
-    int $storageFee = (40000000 - min($tonBalanceBeforeMsg, 40000000));
-    $msgValue = ($msgValue - ($storageFee + 40000000));
-    int $value_default = 0;
-    int $sendingValue = 0;
-    do {
-        slice $receiver = __tact_dict_get_int_slice($msg'user_list, 257, $value_default);
-        int $value_send = __tact_dict_get_int_int($msg'sending_value, 257, $value_default, 257);
-        $sendingValue = (__tact_not_null($value_send) + $sendingValue);
-        $send(__gen_constructor_SendParameters$to_value_mode_bounce(__tact_not_null($receiver), __tact_not_null($value_send), 2, false));
-        $value_default = ($value_default + 1);
-    } until (($value_default > $msg'length));
-    $send(__gen_constructor_SendParameters$to_value_mode_bounce_body($ctx'sender, ($msgValue - $sendingValue), 2, false, $__gen_String_asComment(__gen_str_339420938())));
-    return (($self'owner), ());
+(tuple, ()) $__gen_Echo_receive_comment(tuple $self, slice $msg) impure inline {
+    var $self = $self;
+    tuple $builder = __tact_string_builder_start_string();
+    $builder~__tact_string_builder_append(__gen_str_591567833());
+    $builder~__tact_string_builder_append($msg);
+    int $endTime = (now() + 10000);
+    while ((now() < $endTime)) {
+    }
+    $reply($__gen_String_asComment(__tact_string_builder_end_slice($builder)));
+    return ($self, ());
 }
 
-(((slice)), ()) $__gen_TestTest_receive((slice) $self) impure inline {
-    var ($self'owner) = $self;
-    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
-    $send(__gen_constructor_SendParameters$to_value_mode_bounce($ctx'sender, 0, (2 + 128), false));
-    return (($self'owner), ());
+(tuple, ()) $__gen_Echo_receive_fallback(tuple $self, slice $msg) impure inline {
+    var $self = $self;
+    $reply($__gen_Slice_asCell($msg));
+    return ($self, ());
 }
 
-(((slice)), ()) $__gen_TestTest_receive_InputJetton((slice) $self, (int, slice, cell, cell) $msg) impure inline {
-    var ($self'owner) = $self;
-    var ($msg'length, $msg'jetton_address, $msg'user_list, $msg'sending_value) = $msg;
-    return (($self'owner), ());
-}
-
-((slice), int) __gen_router_TestTest((slice) self, int msg_bounced, slice in_msg) impure inline_ref {
+(tuple, int) __gen_router_Echo(tuple self, int msg_bounced, slice in_msg) impure inline_ref {
     
     ;; Parse incoming message
     int op = 0;
@@ -277,27 +232,17 @@ cell $__gen_String_asComment(slice $self) impure inline_ref {
         return (self, true);
     }
     
-    ;; Receive InputTON message
-    if (op == 3052599932) {
-        var msg = in_msg~__gen_read_InputTON();
-        self~$__gen_TestTest_receive_InputTON(msg);
-        return (self, true);
+    ;; Text Receivers
+    if (op == 0) {
+        if (slice_bits(in_msg) >= 32) {
+            self~$__gen_Echo_receive_comment(in_msg.skip_bits(32));
+            return (self, true);
+        }
     }
     
-    ;; Receive empty message
-    if ((op == 0) & (slice_bits(in_msg) <= 32)) {
-        self~$__gen_TestTest_receive();
-        return (self, true);
-    }
-    
-    ;; Receive InputJetton message
-    if (op == 1953149365) {
-        var msg = in_msg~__gen_read_InputJetton();
-        self~$__gen_TestTest_receive_InputJetton(msg);
-        return (self, true);
-    }
-    
-    return (self, false);
+    ;; Receiver fallback
+    self~$__gen_Echo_receive_fallback(in_msg);
+    return (self, true);
 }
 
 () recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
@@ -310,16 +255,16 @@ cell $__gen_String_asComment(slice $self) impure inline_ref {
     __tact_context = (msg_bounced, msg_sender_addr, msg_value, cs);
     
     ;; Load contract data
-    var self = __gen_load_TestTest();
+    var self = __gen_load_Echo();
     
     ;; Handle operation
-    int handled = self~__gen_router_TestTest(msg_bounced, in_msg);
+    int handled = self~__gen_router_Echo(msg_bounced, in_msg);
     
     ;; Throw if not handled
     throw_unless(handled, 130);
     
     ;; Persist state
-    __gen_store_TestTest(self);
+    __gen_store_Echo(self);
 }
 
 _ supported_interfaces() method_id {
@@ -331,7 +276,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() {
-    return "ipfs://Qmbe4WvTctxYK7toFB5m92aUJZqfFonJSo4VsrFR6pJhSV";
+    return "ipfs://QmNwwt8aViq6vjWChXqWbFsvn6VMEFVio9g7XWi7be1PSA";
 }
 
 _ lazy_deployment_completed() {

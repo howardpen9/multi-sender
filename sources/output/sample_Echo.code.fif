@@ -1,43 +1,35 @@
 PROGRAM{
-  DECLPROC __tact_my_balance
   DECLPROC __tact_not_null
   DECLPROC __tact_context_get
   DECLPROC __tact_verify_address
   DECLPROC __tact_store_bool
-  DECLPROC __tact_load_address
   DECLPROC __tact_store_address
-  DECLPROC __tact_dict_get_int_int
-  DECLPROC __tact_dict_get_int_slice
   DECLPROC __tact_string_builder_start
   DECLPROC __tact_string_builder_start_comment
+  DECLPROC __tact_string_builder_start_string
   DECLPROC __tact_string_builder_end
+  DECLPROC __tact_string_builder_end_slice
   DECLPROC __tact_string_builder_append
-  DECLPROC __gen_read_InputTON
-  DECLPROC __gen_read_InputJetton
-  DECLPROC __gen_write_TestTest
-  DECLPROC __gen_read_TestTest
-  DECLPROC __gen_read_$init$TestTest
-  DECLPROC $__gen_TestTest_init
-  DECLPROC __gen_load_TestTest
-  DECLPROC __gen_store_TestTest
+  DECLPROC __gen_read_$init$Echo
+  DECLPROC $__gen_Echo_init
+  DECLPROC __gen_load_Echo
+  DECLPROC __gen_store_Echo
   DECLPROC $send
+  DECLPROC __gen_constructor_SendParameters$bounce_to_value_mode_body
+  DECLPROC $reply
+  DECLPROC $__gen_Slice_asCell
   DECLPROC $__gen_String_asComment
-  DECLPROC __gen_constructor_SendParameters$to_value_mode_bounce
-  DECLPROC __gen_constructor_SendParameters$to_value_mode_bounce_body
-  DECLPROC $__gen_TestTest_receive_InputTON
-  DECLPROC $__gen_TestTest_receive
-  DECLPROC $__gen_TestTest_receive_InputJetton
-  DECLPROC __gen_router_TestTest
+  DECLPROC $__gen_Echo_hello
+  115554 DECLMETHOD $__gen_get_hello
+  DECLPROC $__gen_Echo_receive_comment
+  DECLPROC $__gen_Echo_receive_fallback
+  DECLPROC __gen_router_Echo
   DECLPROC recv_internal
   113617 DECLMETHOD supported_interfaces
   DECLPROC get_abi_ipfs
   DECLPROC lazy_deployment_completed
   DECLGLOBVAR __tact_context
   DECLGLOBVAR __tact_context_sys
-  __tact_my_balance PROCINLINE:<{
-    BALANCE
-    FIRST
-  }>
   __tact_not_null PROCINLINE:<{
     DUP
     ISNULL
@@ -57,35 +49,8 @@ PROGRAM{
     SWAP
     1 STI
   }>
-  __tact_load_address PROCINLINE:<{
-    LDMSGADDR
-    SWAP
-  }>
   __tact_store_address PROCINLINE:<{
     STSLICER
-  }>
-  __tact_dict_get_int_int PROCINLINE:<{
-    s1 s3 s3 XCHG3
-    DICTIGET
-    NULLSWAPIFNOT
-    IF:<{
-      SWAP
-      LDIX
-      DROP
-    }>ELSE<{
-      2DROP
-      PUSHNULL
-    }>
-  }>
-  __tact_dict_get_int_slice PROCINLINE:<{
-    -ROT
-    DICTIGET
-    NULLSWAPIFNOT
-    IF:<{
-    }>ELSE<{
-      DROP
-      PUSHNULL
-    }>
   }>
   __tact_string_builder_start PROCINLINE:<{
     NIL
@@ -99,6 +64,10 @@ PROGRAM{
     0 PUSHINT
     SWAP
     32 STU
+    __tact_string_builder_start INLINECALLDICT
+  }>
+  __tact_string_builder_start_string PROCINLINE:<{
+    NEWC
     __tact_string_builder_start INLINECALLDICT
   }>
   __tact_string_builder_end PROCINLINE:<{
@@ -117,6 +86,10 @@ PROGRAM{
       ENDC
     }>
     NIP
+  }>
+  __tact_string_builder_end_slice PROCINLINE:<{
+    __tact_string_builder_end INLINECALLDICT
+    CTOS
   }>
   __tact_string_builder_append PROCREF:<{
     DUP
@@ -184,44 +157,16 @@ PROGRAM{
     }>
     3 BLKDROP
   }>
-  __gen_read_InputTON PROCINLINE:<{
-    32 LDU
-    SWAP
-    3052599932 PUSHINT
-    EQUAL
-    129 THROWIFNOT
+  __gen_read_$init$Echo PROCINLINE:<{
     257 PUSHINT
     LDIX
-    LDDICT
-    LDDICT
-    3 -ROLL
-  }>
-  __gen_read_InputJetton PROCINLINE:<{
-    32 LDU
     SWAP
-    1953149365 PUSHINT
-    EQUAL
-    129 THROWIFNOT
-    257 PUSHINT
-    LDIX
-    __tact_load_address INLINECALLDICT
-    SWAP
-    LDDICT
-    LDDICT
-    4 -ROLL
   }>
-  __gen_write_TestTest PROCINLINE:<{
-    __tact_store_address INLINECALLDICT
+  $__gen_Echo_init PROCREF:<{
+    DROP
+    PUSHNULL
   }>
-  __gen_read_TestTest PROCINLINE:<{
-    __tact_load_address INLINECALLDICT
-  }>
-  __gen_read_$init$TestTest PROCINLINE:<{
-    __tact_load_address INLINECALLDICT
-  }>
-  $__gen_TestTest_init PROCREF:<{
-  }>
-  __gen_load_TestTest PROCINLINE:<{
+  __gen_load_Echo PROCINLINE:<{
     c4 PUSH
     CTOS
     LDREF
@@ -230,16 +175,17 @@ PROGRAM{
     1 LDI
     SWAP
     IF:<{
-      __gen_read_TestTest INLINECALLDICT
-      NIP
+      DROP
+      PUSHNULL
     }>ELSE<{
-      __gen_read_$init$TestTest INLINECALLDICT
+      __gen_read_$init$Echo INLINECALLDICT
       SWAP
       ENDS
-      $__gen_TestTest_init INLINECALLDICT
+      $__gen_Echo_init INLINECALLDICT
     }>
   }>
-  __gen_store_TestTest PROCINLINE:<{
+  __gen_store_Echo PROCINLINE:<{
+    DROP
     NEWC
     __tact_context_sys GETGLOB
     SWAP
@@ -247,8 +193,6 @@ PROGRAM{
     TRUE
     SWAP
     1 STI
-    SWAP
-    __gen_write_TestTest INLINECALLDICT
     ENDC
     c4 POP
   }>
@@ -351,93 +295,75 @@ PROGRAM{
     SWAP
     SENDRAWMSG
   }>
+  __gen_constructor_SendParameters$bounce_to_value_mode_body PROCINLINE:<{
+    PUSHNULL
+    PUSHNULL
+  }>
+  $reply PROCREF:<{
+    __tact_context_get INLINECALLDICT
+    s2 s3 XCHG
+    3 BLKDROP
+    TRUE
+    0 PUSHINT
+    s0 s3 XCHG2
+    66 PUSHINT
+    SWAP
+    __gen_constructor_SendParameters$bounce_to_value_mode_body INLINECALLDICT
+    $send INLINECALLDICT
+  }>
+  $__gen_Slice_asCell PROCREF:<{
+    NEWC
+    SWAP
+    STSLICER
+    ENDC
+  }>
   $__gen_String_asComment PROCREF:<{
     __tact_string_builder_start_comment INLINECALLDICT
     SWAP
     __tact_string_builder_append INLINECALLDICT
     __tact_string_builder_end INLINECALLDICT
   }>
-  __gen_constructor_SendParameters$to_value_mode_bounce PROCINLINE:<{
-    3 -ROLL
-    PUSHNULL
-    PUSHNULL
-    PUSHNULL
-  }>
-  __gen_constructor_SendParameters$to_value_mode_bounce_body PROCINLINE:<{
-    s1 s4 XCHG
-    s3 s3 s0 XCHG3
-    PUSHNULL
-    PUSHNULL
-  }>
-  $__gen_TestTest_receive_InputTON PROCINLINE:<{
-    __tact_context_get INLINECALLDICT
-    DROP
-    s2 POP
-    __tact_my_balance INLINECALLDICT
-    s2 PUSH
-    SUB
-    40000000 PUSHINT
-    TUCK
-    MIN
-    SUB
-    40000000 PUSHINT
-    ADD
-    s1 s2 XCHG
-    SUB
-    0 PUSHINT
-    DUP
-    UNTIL:<{
-      s5 PUSH
-      257 PUSHINT
-      s3 PUSH
-      __tact_dict_get_int_slice INLINECALLDICT
-      257 PUSHINT
-      s6 s(-1) s(-1) PUXCPU
-      s5 s(-1) PUXC
-      __tact_dict_get_int_int INLINECALLDICT
-      DUP
-      __tact_not_null INLINECALLDICT
-      s0 s3 XCHG2
-      ADD
-      SWAP
-      __tact_not_null INLINECALLDICT
-      s0 s2 XCHG
-      __tact_not_null INLINECALLDICT
-      s1 s2 XCHG
-      2 PUSHINT
-      FALSE
-      __gen_constructor_SendParameters$to_value_mode_bounce INLINECALLDICT
-      $send INLINECALLDICT
-      SWAP
-      INC
-      s0 s6 PUSH2
-      GREATER
-      s1 s2 XCHG
-    }>
+  $__gen_Echo_hello PROCREF:<{
     NIP
-    3 3 BLKDROP2
-    SUB
-    2 PUSHINT
-    FALSE
-    B{b5ee9c7241010101000a000010436f6d706c657465f8ddae36} B>boc <s PUSHSLICE
+    __tact_string_builder_start_string INLINECALLDICT
+    B{b5ee9c7241010101000900000e48656c6c6f2c20e8d197d2} B>boc <s PUSHSLICE
+    __tact_string_builder_append INLINECALLDICT
+    SWAP
+    __tact_string_builder_append INLINECALLDICT
+    __tact_string_builder_end_slice INLINECALLDICT
+  }>
+  $__gen_get_hello PROC:<{
+    __gen_load_Echo INLINECALLDICT
+    SWAP
+    $__gen_Echo_hello INLINECALLDICT
+  }>
+  $__gen_Echo_receive_comment PROCINLINE:<{
+    __tact_string_builder_start_string INLINECALLDICT
+    B{b5ee9c7241010101000900000e48656c6c6f2c20e8d197d2} B>boc <s PUSHSLICE
+    __tact_string_builder_append INLINECALLDICT
+    SWAP
+    __tact_string_builder_append INLINECALLDICT
+    NOW
+    10000 PUSHINT
+    ADD
+    WHILE:<{
+      NOW
+      OVER
+      LESS
+    }>DO<{
+    }>
+    DROP
+    __tact_string_builder_end_slice INLINECALLDICT
     $__gen_String_asComment INLINECALLDICT
-    __gen_constructor_SendParameters$to_value_mode_bounce_body INLINECALLDICT
-    $send INLINECALLDICT
+    $reply INLINECALLDICT
   }>
-  $__gen_TestTest_receive PROCINLINE:<{
-    __tact_context_get INLINECALLDICT
-    s2 s3 XCHG
-    3 BLKDROP
-    0 PUSHINT
-    130 PUSHINT
-    FALSE
-    __gen_constructor_SendParameters$to_value_mode_bounce INLINECALLDICT
-    $send INLINECALLDICT
+  $__gen_Echo_receive_fallback PROCINLINE:<{
+    $__gen_Slice_asCell INLINECALLDICT
+    $reply INLINECALLDICT
   }>
-  $__gen_TestTest_receive_InputJetton PROCINLINE:<{
-    4 BLKDROP
-  }>
-  __gen_router_TestTest PROCREF:<{
+  __gen_router_Echo PROCREF:<{
+    c2 SAVE
+    SAMEALTSAVE
     0 PUSHINT
     OVER
     SBITS
@@ -452,38 +378,22 @@ PROGRAM{
       2DROP
       TRUE
     }>
-    OVER
-    3052599932 PUSHINT
-    EQUAL
-    IFJMP:<{
-      NIP
-      __gen_read_InputTON INLINECALLDICT
-      1 3 BLKDROP2
-      $__gen_TestTest_receive_InputTON INLINECALLDICT
-      TRUE
-    }>
-    OVER
-    0 EQINT
-    OVER
-    SBITS
-    33 LESSINT
-    AND
-    IFJMP:<{
-      2DROP
-      $__gen_TestTest_receive INLINECALLDICT
-      TRUE
-    }>
     SWAP
-    1953149365 PUSHINT
-    EQUAL
-    IFJMP:<{
-      __gen_read_InputJetton INLINECALLDICT
-      1 4 BLKDROP2
-      $__gen_TestTest_receive_InputJetton INLINECALLDICT
-      TRUE
+    0 EQINT
+    IF:<{
+      DUP
+      SBITS
+      31 GTINT
+      IFJMP:<{
+        32 PUSHINT
+        SDSKIPFIRST
+        $__gen_Echo_receive_comment INLINECALLDICT
+        TRUE
+        RETALT
+      }>
     }>
-    DROP
-    FALSE
+    $__gen_Echo_receive_fallback INLINECALLDICT
+    TRUE
   }>
   recv_internal PROC:<{
     SWAP
@@ -504,11 +414,11 @@ PROGRAM{
     s5 s5 XCHG2
     4 TUPLE
     __tact_context SETGLOB
-    __gen_load_TestTest INLINECALLDICT
+    __gen_load_Echo INLINECALLDICT
     -ROT
-    __gen_router_TestTest INLINECALLDICT
+    __gen_router_Echo INLINECALLDICT
     DROP
-    __gen_store_TestTest INLINECALLDICT
+    __gen_store_Echo INLINECALLDICT
   }>
   supported_interfaces PROC:<{
     123515602279859691144772641439386770278 PUSHINT
@@ -516,7 +426,7 @@ PROGRAM{
     42980537499636128163026532310500881091 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d626534577654637478594b37746f4642356d393261554a5a7166466f6e4a536f34567372465236704a685356} PUSHSLICE
+    x{697066733a2f2f516d4e777774386156697136766a574368587157624673766e36564d454656696f39673758576937626531505341} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH

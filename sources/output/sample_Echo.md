@@ -1,9 +1,9 @@
 # TACT Compilation Report
-Contract: TestTest
-BOC Size: 729 bytes
+Contract: Echo
+BOC Size: 687 bytes
 
 # Types
-Total Types: 5
+Total Types: 3
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -17,16 +17,11 @@ Signature: `Context{bounced:bool,sender:address,value:int257,raw:^slice}`
 TLB: `_ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell = SendParameters`
 Signature: `SendParameters{bounce:bool,to:address,value:int257,mode:int257,body:Maybe ^cell,code:Maybe ^cell,data:Maybe ^cell}`
 
-## InputTON
-TLB: `input_ton#b5f2fa7c length:int257 user_list:dict<int, address> sending_value:dict<int, int> = InputTON`
-Signature: `InputTON{length:int257,user_list:dict<int, address>,sending_value:dict<int, int>}`
-
-## InputJetton
-TLB: `input_jetton#746ab1b5 length:int257 jetton_address:address user_list:dict<int, address> sending_value:dict<int, int> = InputJetton`
-Signature: `InputJetton{length:int257,jetton_address:address,user_list:dict<int, address>,sending_value:dict<int, int>}`
-
 # Get Methods
-Total Get Methods: 0
+Total Get Methods: 1
+
+## hello
+Argument: src
 
 # Error Codes
 2: Stack undeflow
