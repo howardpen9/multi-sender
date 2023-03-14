@@ -187,40 +187,40 @@ function dictValueParserSendParameters(): DictionaryValue<SendParameters> {
     }
 }
 
-export type InputTON = {
-    $$type: 'InputTON';
+export type AirdropTON_Without_Comment = {
+    $$type: 'AirdropTON_Without_Comment';
     length: bigint;
     user_list: Dictionary<bigint, Address>;
     sending_value: Dictionary<bigint, bigint>;
 }
 
-export function storeInputTON(src: InputTON) {
+export function storeAirdropTON_Without_Comment(src: AirdropTON_Without_Comment) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(3052599932, 32);
+        b_0.storeUint(2107066889, 32);
         b_0.storeInt(src.length, 257);
         b_0.storeDict(src.user_list, Dictionary.Keys.BigInt(257), Dictionary.Values.Address());
         b_0.storeDict(src.sending_value, Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257));
     };
 }
 
-export function loadInputTON(slice: Slice) {
+export function loadAirdropTON_Without_Comment(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 3052599932) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 2107066889) { throw Error('Invalid prefix'); }
     let _length = sc_0.loadIntBig(257);
     let _user_list = Dictionary.load(Dictionary.Keys.BigInt(257), Dictionary.Values.Address(), sc_0);
     let _sending_value = Dictionary.load(Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257), sc_0);
-    return { $$type: 'InputTON' as const, length: _length, user_list: _user_list, sending_value: _sending_value };
+    return { $$type: 'AirdropTON_Without_Comment' as const, length: _length, user_list: _user_list, sending_value: _sending_value };
 }
 
-function loadTupleInputTON(source: TupleReader) {
+function loadTupleAirdropTON_Without_Comment(source: TupleReader) {
     let _length = source.readBigNumber();
     let _user_list = Dictionary.loadDirect(Dictionary.Keys.BigInt(257), Dictionary.Values.Address(), source.readCellOpt());
     let _sending_value = Dictionary.loadDirect(Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257), source.readCellOpt());
-    return { $$type: 'InputTON' as const, length: _length, user_list: _user_list, sending_value: _sending_value };
+    return { $$type: 'AirdropTON_Without_Comment' as const, length: _length, user_list: _user_list, sending_value: _sending_value };
 }
 
-function storeTupleInputTON(source: InputTON) {
+function storeTupleAirdropTON_Without_Comment(source: AirdropTON_Without_Comment) {
     let builder = new TupleBuilder();
     builder.writeNumber(source.length);
     builder.writeCell(source.user_list.size > 0 ? beginCell().storeDictDirect(source.user_list, Dictionary.Keys.BigInt(257), Dictionary.Values.Address()).endCell() : null);
@@ -228,13 +228,13 @@ function storeTupleInputTON(source: InputTON) {
     return builder.build();
 }
 
-function dictValueParserInputTON(): DictionaryValue<InputTON> {
+function dictValueParserAirdropTON_Without_Comment(): DictionaryValue<AirdropTON_Without_Comment> {
     return {
         serialize: (src, buidler) => {
-            buidler.storeRef(beginCell().store(storeInputTON(src)).endCell());
+            buidler.storeRef(beginCell().store(storeAirdropTON_Without_Comment(src)).endCell());
         },
         parse: (src) => {
-            return loadInputTON(src.loadRef().beginParse());
+            return loadAirdropTON_Without_Comment(src.loadRef().beginParse());
         }
     }
 }
@@ -309,8 +309,8 @@ function initTestTest_init_args(src: TestTest_init_args) {
 }
 
 async function TestTest_init(owner: Address) {
-    const __code = Cell.fromBase64('te6ccgECDQEAAs0AART/APSkE/S88sgLAQIBYgIDAYTQAdDTAwFxsMABkX+RcOIB+kAiUFVvBPhh7UTQ1AH4YtIAAZT6QAExlfpAAQHR4lnbPDDI+EIBzH8BygABzxbJ7VQEAHGhd6ME4LnYerpZXPY9CdhzrJUKNs0E4TusalpWyPlmRadeW/vixHME4ECrgDcAzscpnLB1XI5LZYcD0nAh10nCH5UwINcLH94Cklt/4CGCELXy+ny6jp4x0x8BghC18vp8uvLggYEBAdcA9AT0BFUgbBPbPH/gIcAAIddJwSGwjpZb+EFvJBAjXwNwgQCCcFUgbW1t2zx/4AGCEHRqsbW64wIwcAULBgT0+EFvJDAy+CdvECKhggpiWgBmtgihggpiWgCgEqFwII7KJYEBASNZ9AxvoZIwbd+BAQFUVgBSUEEz9AxvoZQB1wAwkltt4iAgbvLQgFADoAEgbvLQgAIgbvLQgBJycFUgbW1t2zwBpFMGvBLmMWwzoXJwids8FEMwbW0LBwgJAELTHwGCEHRqsbW68uCBgQEB1wD6QAEB9AT0BFUwbBRfBH8AEENvbXBsZXRlAULIcAHLH28AAW+MbW+MAds8byIByZMhbrOWAW8iWczJ6DEKAQTbPAsAuiDXSiHXSZcgwgAiwgCxjkoDbyKAfyLPMasCoQWrAlFVtgggwgCcIKoCFdcYUDPPFkAU3llvAlNBocIAmcgBbwJQRKGqAo4SMTPCAJnUMNAg10oh10mScCDi4uhfAwH2yHEBygFQBwHKAHABygJQBc8WUAP6AnABymgjbrMlbrOxjkx/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMlzMzAXABygDiIW6zDAAwnH8BygABIG7y0IABzJUxcAHKAOLJAfsA');
-    const __system = Cell.fromBase64('te6cckECDwEAAtcAAQHAAQEFoXoBAgEU/wD0pBP0vPLICwMCAWIFBABxoXejBOC52Hq6WVz2PQnYc6yVCjbNBOE7rGpaVsj5ZkWnXlv74sRzBOBAq4A3AM7HKZywdVyOS2WHAYTQAdDTAwFxsMABkX+RcOIB+kAiUFVvBPhh7UTQ1AH4YtIAAZT6QAExlfpAAQHR4lnbPDDI+EIBzH8BygABzxbJ7VQGA9JwIddJwh+VMCDXCx/eApJbf+AhghC18vp8uo6eMdMfAYIQtfL6fLry4IGBAQHXAPQE9ARVIGwT2zx/4CHAACHXScEhsI6WW/hBbyQQI18DcIEAgnBVIG1tbds8f+ABghB0arG1uuMCMHAIDQcAQtMfAYIQdGqxtbry4IGBAQHXAPpAAQH0BPQEVTBsFF8EfwT0+EFvJDAy+CdvECKhggpiWgBmtgihggpiWgCgEqFwII7KJYEBASNZ9AxvoZIwbd+BAQFUVgBSUEEz9AxvoZQB1wAwkltt4iAgbvLQgFADoAEgbvLQgAIgbvLQgBJycFUgbW1t2zwBpFMGvBLmMWwzoXJwids8FEMwbW0NDAoJAQTbPA0BQshwAcsfbwABb4xtb4wB2zxvIgHJkyFus5YBbyJZzMnoMQsAuiDXSiHXSZcgwgAiwgCxjkoDbyKAfyLPMasCoQWrAlFVtgggwgCcIKoCFdcYUDPPFkAU3llvAlNBocIAmcgBbwJQRKGqAo4SMTPCAJnUMNAg10oh10mScCDi4uhfAwAQQ29tcGxldGUB9shxAcoBUAcBygBwAcoCUAXPFlAD+gJwAcpoI26zJW6zsY5MfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzJczMwFwAcoA4iFusw4AMJx/AcoAASBu8tCAAcyVMXABygDiyQH7AB0bv68=');
+    const __code = Cell.fromBase64('te6ccgECDAEAAp0AART/APSkE/S88sgLAQIBYgIDAYTQAdDTAwFxsMABkX+RcOIB+kAiUFVvBPhh7UTQ1AH4YtIAAZT6QAExlfpAAQHR4lnbPDDI+EIBzH8BygABzxbJ7VQEAHGhd6ME4LnYerpZXPY9CdhzrJUKNs0E4TusalpWyPlmRadeW/vixHME4ECrgDcAzscpnLB1XI5LZYcCunAh10nCH5UwINcLH94Cklt/4CGCEH2XSgm6jp4x0x8BghB9l0oJuvLggYEBAdcA9AT0BFUgbBPbPH/gAcAAAddJwSGwjpX4QW8kECNfA3CBAIJwVSBtbW3bPH/gcAUKBPT4QW8kMDL4J28QIqGCCmJaAGa2CKGCCmJaAKASoXAgjsolgQEBI1n0DG+hkjBt34EBAVRWAFJQQTP0DG+hlAHXADCSW23iICBu8tCAUAOgASBu8tCAAiBu8tCAEnJwVSBtbW3bPAGkUwa8EuYxbDOhcnCJ2zwUQzBtbQoGBwgAEENvbXBsZXRlAULIcAHLH28AAW+MbW+MAds8byIByZMhbrOWAW8iWczJ6DEJAQTbPAoAuiDXSiHXSZcgwgAiwgCxjkoDbyKAfyLPMasCoQWrAlFVtgggwgCcIKoCFdcYUDPPFkAU3llvAlNBocIAmcgBbwJQRKGqAo4SMTPCAJnUMNAg10oh10mScCDi4uhfAwH2yHEBygFQBwHKAHABygJQBc8WUAP6AnABymgjbrMlbrOxjkx/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMlzMzAXABygDiIW6zCwAwnH8BygABIG7y0IABzJUxcAHKAOLJAfsA');
+    const __system = Cell.fromBase64('te6cckECDgEAAqcAAQHAAQEFoXoBAgEU/wD0pBP0vPLICwMCAWIFBABxoXejBOC52Hq6WVz2PQnYc6yVCjbNBOE7rGpaVsj5ZkWnXlv74sRzBOBAq4A3AM7HKZywdVyOS2WHAYTQAdDTAwFxsMABkX+RcOIB+kAiUFVvBPhh7UTQ1AH4YtIAAZT6QAExlfpAAQHR4lnbPDDI+EIBzH8BygABzxbJ7VQGArpwIddJwh+VMCDXCx/eApJbf+AhghB9l0oJuo6eMdMfAYIQfZdKCbry4IGBAQHXAPQE9ARVIGwT2zx/4AHAAAHXScEhsI6V+EFvJBAjXwNwgQCCcFUgbW1t2zx/4HAHDAT0+EFvJDAy+CdvECKhggpiWgBmtgihggpiWgCgEqFwII7KJYEBASNZ9AxvoZIwbd+BAQFUVgBSUEEz9AxvoZQB1wAwkltt4iAgbvLQgFADoAEgbvLQgAIgbvLQgBJycFUgbW1t2zwBpFMGvBLmMWwzoXJwids8FEMwbW0MCwkIAQTbPAwBQshwAcsfbwABb4xtb4wB2zxvIgHJkyFus5YBbyJZzMnoMQoAuiDXSiHXSZcgwgAiwgCxjkoDbyKAfyLPMasCoQWrAlFVtgggwgCcIKoCFdcYUDPPFkAU3llvAlNBocIAmcgBbwJQRKGqAo4SMTPCAJnUMNAg10oh10mScCDi4uhfAwAQQ29tcGxldGUB9shxAcoBUAcBygBwAcoCUAXPFlAD+gJwAcpoI26zJW6zsY5MfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzJczMwFwAcoA4iFusw0AMJx/AcoAASBu8tCAAcyVMXABygDiyQH7AKltI44=');
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
@@ -372,17 +372,14 @@ export class TestTest implements Contract {
         this.init = init;
     }
     
-    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: InputTON | null | InputJetton) {
+    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: AirdropTON_Without_Comment | null) {
         
         let body: Cell | null = null;
-        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'InputTON') {
-            body = beginCell().store(storeInputTON(message)).endCell();
+        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'AirdropTON_Without_Comment') {
+            body = beginCell().store(storeAirdropTON_Without_Comment(message)).endCell();
         }
         if (message === null) {
             body = new Cell();
-        }
-        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'InputJetton') {
-            body = beginCell().store(storeInputJetton(message)).endCell();
         }
         if (body === null) { throw new Error('Invalid message type'); }
         

@@ -89,12 +89,7 @@ slice __tact_string_builder_end_slice(tuple builders) inline {
     return ((builders), ());
 }
 
-(slice, ((int))) __gen_read_$init$Echo(slice sc_0) inline {
-    var v'a = sc_0~load_int(257);
-    return (sc_0, (v'a));
-}
-
-tuple $__gen_Echo_init(int $a) impure inline_ref {
+tuple $__gen_Echo_init() impure inline_ref {
     tuple $self = null();
     return $self;
 }
@@ -106,9 +101,7 @@ tuple __gen_load_Echo() impure inline {
     if ($loaded) {
         return null();
     } else {
-        (int a) = $sc~__gen_read_$init$Echo();
-        $sc.end_parse();
-        return $__gen_Echo_init(a);
+        return $__gen_Echo_init();
     }
 }
 
@@ -201,15 +194,19 @@ _ $__gen_get_hello(slice $$src) method_id(115554) {
     return res;
 }
 
+((int, slice, int, int, cell, cell, cell)) __gen_constructor_SendParameters$to_value_mode_bounce_body(slice to, int value, int mode, int bounce, cell body) inline {
+    return (bounce, to, value, mode, body, null(), null());
+}
+
 (tuple, ()) $__gen_Echo_receive_comment(tuple $self, slice $msg) impure inline {
     var $self = $self;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
     tuple $builder = __tact_string_builder_start_string();
     $builder~__tact_string_builder_append(__gen_str_591567833());
     $builder~__tact_string_builder_append($msg);
-    int $endTime = (now() + 10000);
-    while ((now() < $endTime)) {
-    }
     $reply($__gen_String_asComment(__tact_string_builder_end_slice($builder)));
+    throw(123123123);
+    $send(__gen_constructor_SendParameters$to_value_mode_bounce_body($ctx'sender, 0, (64 + 2), false, $__gen_String_asComment(__tact_string_builder_end_slice($builder))));
     return ($self, ());
 }
 

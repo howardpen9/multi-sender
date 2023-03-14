@@ -22,12 +22,6 @@ builder __tact_store_bool(builder b, int v) inline {
     return b;
 }
 
-(slice, slice) __tact_load_address(slice cs) inline {
-    slice raw = cs~load_msg_addr();
-    __tact_verify_address(raw);
-    return (cs, raw);
-}
-
 builder __tact_store_address(builder b, slice address) inline {
     __tact_verify_address(address);
     b = b.store_slice(address);
@@ -117,46 +111,26 @@ cell __tact_string_builder_end(tuple builders) inline {
     return (sc_0, (v'length, v'user_list, v'sending_value));
 }
 
-builder __gen_write_TestTest(builder build_0, (slice) v) inline {
-    var (v'owner) = v;
-    build_0 = __tact_store_address(build_0, v'owner);
-    return build_0;
+tuple $__gen_Airdrop_init() impure inline_ref {
+    tuple $self = null();
+    return $self;
 }
 
-(slice, ((slice))) __gen_read_TestTest(slice sc_0) inline {
-    var v'owner = sc_0~__tact_load_address();
-    return (sc_0, (v'owner));
-}
-
-(slice, ((slice))) __gen_read_$init$TestTest(slice sc_0) inline {
-    var v'owner = sc_0~__tact_load_address();
-    return (sc_0, (v'owner));
-}
-
-(slice) $__gen_TestTest_init(slice $owner) impure inline_ref {
-    var (($self'owner)) = (null());
-    $self'owner = $owner;
-    return ($self'owner);
-}
-
-(slice) __gen_load_TestTest() impure inline {
+tuple __gen_load_Airdrop() impure inline {
     slice $sc = get_data().begin_parse();
     __tact_context_sys = $sc~load_ref();
     int $loaded = $sc~load_int(1);
     if ($loaded) {
-        return $sc~__gen_read_TestTest();
+        return null();
     } else {
-        (slice owner) = $sc~__gen_read_$init$TestTest();
-        $sc.end_parse();
-        return $__gen_TestTest_init(owner);
+        return $__gen_Airdrop_init();
     }
 }
 
-() __gen_store_TestTest((slice) v) impure inline {
+() __gen_store_Airdrop(tuple v) impure inline {
     builder b = begin_cell();
     b = b.store_ref(__tact_context_sys);
     b = b.store_int(true, 1);
-    b = __gen_write_TestTest(b, v);
     set_data(b.end_cell());
 }
 
@@ -221,16 +195,16 @@ cell $__gen_String_asComment(slice $self) impure inline_ref {
     return (bounce, to, value, mode, body, null(), null());
 }
 
-(((slice)), ()) $__gen_TestTest_receive_AirdropTON_Without_Comment((slice) $self, (int, cell, cell) $msg) impure inline {
-    var ($self'owner) = $self;
+((tuple), ()) $__gen_Airdrop_receive_AirdropTON_Without_Comment(tuple $self, (int, cell, cell) $msg) impure inline {
+    var $self = $self;
     var ($msg'length, $msg'user_list, $msg'sending_value) = $msg;
     var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
     int $msgValue = $ctx'value;
     int $tonBalanceBeforeMsg = (__tact_my_balance() - $msgValue);
     int $storageFee = (40000000 - min($tonBalanceBeforeMsg, 40000000));
     $msgValue = ($msgValue - ($storageFee + 40000000));
-    int $value_default = 0;
-    int $sendingValue = 0;
+    int $value_default = 1;
+    int $sendingValue = 1;
     do {
         slice $receiver = __tact_dict_get_int_slice($msg'user_list, 257, $value_default);
         int $value_send = __tact_dict_get_int_int($msg'sending_value, 257, $value_default, 257);
@@ -239,17 +213,17 @@ cell $__gen_String_asComment(slice $self) impure inline_ref {
         $value_default = ($value_default + 1);
     } until (($value_default > $msg'length));
     $send(__gen_constructor_SendParameters$to_value_mode_bounce_body($ctx'sender, ($msgValue - $sendingValue), 2, false, $__gen_String_asComment(__gen_str_339420938())));
-    return (($self'owner), ());
+    return ($self, ());
 }
 
-(((slice)), ()) $__gen_TestTest_receive((slice) $self) impure inline {
-    var ($self'owner) = $self;
+((tuple), ()) $__gen_Airdrop_receive(tuple $self) impure inline {
+    var $self = $self;
     var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
     $send(__gen_constructor_SendParameters$to_value_mode_bounce($ctx'sender, 0, (2 + 128), false));
-    return (($self'owner), ());
+    return ($self, ());
 }
 
-((slice), int) __gen_router_TestTest((slice) self, int msg_bounced, slice in_msg) impure inline_ref {
+(tuple, int) __gen_router_Airdrop(tuple self, int msg_bounced, slice in_msg) impure inline_ref {
     
     ;; Parse incoming message
     int op = 0;
@@ -265,13 +239,13 @@ cell $__gen_String_asComment(slice $self) impure inline_ref {
     ;; Receive AirdropTON_Without_Comment message
     if (op == 2107066889) {
         var msg = in_msg~__gen_read_AirdropTON_Without_Comment();
-        self~$__gen_TestTest_receive_AirdropTON_Without_Comment(msg);
+        self~$__gen_Airdrop_receive_AirdropTON_Without_Comment(msg);
         return (self, true);
     }
     
     ;; Receive empty message
     if ((op == 0) & (slice_bits(in_msg) <= 32)) {
-        self~$__gen_TestTest_receive();
+        self~$__gen_Airdrop_receive();
         return (self, true);
     }
     
@@ -288,16 +262,16 @@ cell $__gen_String_asComment(slice $self) impure inline_ref {
     __tact_context = (msg_bounced, msg_sender_addr, msg_value, cs);
     
     ;; Load contract data
-    var self = __gen_load_TestTest();
+    var self = __gen_load_Airdrop();
     
     ;; Handle operation
-    int handled = self~__gen_router_TestTest(msg_bounced, in_msg);
+    int handled = self~__gen_router_Airdrop(msg_bounced, in_msg);
     
     ;; Throw if not handled
     throw_unless(handled, 130);
     
     ;; Persist state
-    __gen_store_TestTest(self);
+    __gen_store_Airdrop(self);
 }
 
 _ supported_interfaces() method_id {
@@ -309,7 +283,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() {
-    return "ipfs://QmVUv2u8roNFmTxb96bGwyh85TVminv8cpehGUV835Ct7K";
+    return "ipfs://QmU9Dm5YgmnhRiePhpqTiuFBqbSchbM3A3dTLvY9cSgVQR";
 }
 
 _ lazy_deployment_completed() {

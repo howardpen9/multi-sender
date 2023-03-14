@@ -187,28 +187,80 @@ function dictValueParserSendParameters(): DictionaryValue<SendParameters> {
     }
 }
 
- type Echo_init_args = {
-    $$type: 'Echo_init_args';
+export type AirdropTON_Without_Comment = {
+    $$type: 'AirdropTON_Without_Comment';
+    length: bigint;
+    user_list: Dictionary<bigint, Address>;
+    sending_value: Dictionary<bigint, bigint>;
 }
 
-function initEcho_init_args(src: Echo_init_args) {
+export function storeAirdropTON_Without_Comment(src: AirdropTON_Without_Comment) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(2107066889, 32);
+        b_0.storeInt(src.length, 257);
+        b_0.storeDict(src.user_list, Dictionary.Keys.BigInt(257), Dictionary.Values.Address());
+        b_0.storeDict(src.sending_value, Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257));
+    };
+}
+
+export function loadAirdropTON_Without_Comment(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 2107066889) { throw Error('Invalid prefix'); }
+    let _length = sc_0.loadIntBig(257);
+    let _user_list = Dictionary.load(Dictionary.Keys.BigInt(257), Dictionary.Values.Address(), sc_0);
+    let _sending_value = Dictionary.load(Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257), sc_0);
+    return { $$type: 'AirdropTON_Without_Comment' as const, length: _length, user_list: _user_list, sending_value: _sending_value };
+}
+
+function loadTupleAirdropTON_Without_Comment(source: TupleReader) {
+    let _length = source.readBigNumber();
+    let _user_list = Dictionary.loadDirect(Dictionary.Keys.BigInt(257), Dictionary.Values.Address(), source.readCellOpt());
+    let _sending_value = Dictionary.loadDirect(Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257), source.readCellOpt());
+    return { $$type: 'AirdropTON_Without_Comment' as const, length: _length, user_list: _user_list, sending_value: _sending_value };
+}
+
+function storeTupleAirdropTON_Without_Comment(source: AirdropTON_Without_Comment) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.length);
+    builder.writeCell(source.user_list.size > 0 ? beginCell().storeDictDirect(source.user_list, Dictionary.Keys.BigInt(257), Dictionary.Values.Address()).endCell() : null);
+    builder.writeCell(source.sending_value.size > 0 ? beginCell().storeDictDirect(source.sending_value, Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257)).endCell() : null);
+    return builder.build();
+}
+
+function dictValueParserAirdropTON_Without_Comment(): DictionaryValue<AirdropTON_Without_Comment> {
+    return {
+        serialize: (src, buidler) => {
+            buidler.storeRef(beginCell().store(storeAirdropTON_Without_Comment(src)).endCell());
+        },
+        parse: (src) => {
+            return loadAirdropTON_Without_Comment(src.loadRef().beginParse());
+        }
+    }
+}
+
+ type Airdrop_init_args = {
+    $$type: 'Airdrop_init_args';
+}
+
+function initAirdrop_init_args(src: Airdrop_init_args) {
     return (builder: Builder) => {
         let b_0 = builder;
     };
 }
 
-async function Echo_init() {
-    const __code = Cell.fromBase64('te6ccgECEQEAArcAART/APSkE/S88sgLAQIBYgIDAnbQAdDTAwFxsMABkX+RcOIB+kAiUFVvBPhh7UTQ1AH4YtIAMJFtjoLbPOJZ2zwwMMj4QgHMfwHKAMntVA4EAgFYDA0DZO2i7ftwIddJwh+VMCDXCx/eApJbf+ABwACOkSDXScIfjomAINch2zx/2zHg3ts82zx/BQYIBGj4QW8kECNfA8hvAAFvjG1vjIt0hlbGxvLCCNs8WNs8IG8iAcmTIW6zlgFvIlnMyegx0Ns8EBAJBwAKyAHPFskDWNs8ghAHVrWz8vBwgEJwA28iAcmTIW6zlgFvIlnMyegx0Ns8QTAUQzBtbds8CAkKASb4QW8kECNfA39wUAOAQgFtbds8CgFCyHAByx9vAAFvjG1vjAHbPG8iAcmTIW6zlgFvIlnMyegxEAH2yHEBygFQBwHKAHABygJQBc8WUAP6AnABymgjbrMlbrOxjkx/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMlzMzAXABygDiIW6zCwAwnH8BygABIG7y0IABzJUxcAHKAOLJAfsAAHG7vRgnBc7D1dLK57HoTsOdZKhRtmgnCd1jUtK2R8syLTry398WI5gnAgVcAbgGdjlM5YOq5HJbLDgCLbg2LtRNDUAfhi0gAwkW2Ogts84gHbPIDg8AAm0CVDHIbwABb4xtb4yLdIZWxsbywgjbPAHbPG8iAcmTIW6zlgFvIlnMyegx0BAQALog10oh10mXIMIAIsIAsY5KA28igH8izzGrAqEFqwJRVbYIIMIAnCCqAhXXGFAzzxZAFN5ZbwJTQaHCAJnIAW8CUEShqgKOEjEzwgCZ1DDQINdKIddJknAg4uLoXwM=');
-    const __system = Cell.fromBase64('te6cckECEwEAAsEAAQHAAQEFoB5RAgEU/wD0pBP0vPLICwMCAWIIBAIBWAcFAi24Ni7UTQ1AH4YtIAMJFtjoLbPOIB2zyBIGAlQxyG8AAW+MbW+Mi3SGVsbG8sII2zwB2zxvIgHJkyFus5YBbyJZzMnoMdAREQBxu70YJwXOw9XSyuex6E7DnWSoUbZoJwndY1LStkfLMi068t/fFiOYJwIFXAG4BnY5TOWDquRyWyw4AnbQAdDTAwFxsMABkX+RcOIB+kAiUFVvBPhh7UTQ1AH4YtIAMJFtjoLbPOJZ2zwwMMj4QgHMfwHKAMntVBIJA2Ttou37cCHXScIflTAg1wsf3gKSW3/gAcAAjpEg10nCH46JgCDXIds8f9sx4N7bPNs8fwsKDQAKyAHPFskEaPhBbyQQI18DyG8AAW+MbW+Mi3SGVsbG8sII2zxY2zwgbyIByZMhbrOWAW8iWczJ6DHQ2zwRERAMA1jbPIIQB1a1s/LwcIBCcANvIgHJkyFus5YBbyJZzMnoMdDbPEEwFEMwbW3bPA0QDgEm+EFvJBAjXwN/cFADgEIBbW3bPA4B9shxAcoBUAcBygBwAcoCUAXPFlAD+gJwAcpoI26zJW6zsY5MfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzJczMwFwAcoA4iFusw8AMJx/AcoAASBu8tCAAcyVMXABygDiyQH7AAFCyHAByx9vAAFvjG1vjAHbPG8iAcmTIW6zlgFvIlnMyegxEQC6INdKIddJlyDCACLCALGOSgNvIoB/Is8xqwKhBasCUVW2CCDCAJwgqgIV1xhQM88WQBTeWW8CU0GhwgCZyAFvAlBEoaoCjhIxM8IAmdQw0CDXSiHXSZJwIOLi6F8DAAJtfWnmhQ==');
+async function Airdrop_init() {
+    const __code = Cell.fromBase64('te6ccgECDQEAApoAART/APSkE/S88sgLAQIBYgIDAnbQAdDTAwFxsMABkX+RcOIB+kAiUFVvBPhh7UTQ1AH4YtIAMJFtjoLbPOJZ2zwwMMj4QgHMfwHKAMntVAQFAHGhd6ME4LnYerpZXPY9CdhzrJUKNs0E4TusalpWyPlmRadeW/vixHME4ECrgDcAzscpnLB1XI5LZYcAAm0CunAh10nCH5UwINcLH94Cklt/4CGCEH2XSgm6jp4x0x8BghB9l0oJuvLggYEBAdcA9AT0BFUgbBPbPH/gAcAAAddJwSGwjpX4QW8kECNfA3CBAIJwVSBtbW3bPH/gcAYLBPT4QW8kMDL4J28QIqGCCmJaAGa2CKGCCmJaAKASoXEgjsolgQEBI1n0DG+hkjBt34EBAVRWAFJQQTP0DG+hlAHXADCSW23iICBu8tCAUAOgASBu8tCAAiBu8tCAEnJwVSBtbW3bPAGkUwa8EuYxbDOhcnCJ2zwUQzBtbQsHCAkAEENvbXBsZXRlAULIcAHLH28AAW+MbW+MAds8byIByZMhbrOWAW8iWczJ6DEKAQTbPAsAuiDXSiHXSZcgwgAiwgCxjkoDbyKAfyLPMasCoQWrAlFVtgggwgCcIKoCFdcYUDPPFkAU3llvAlNBocIAmcgBbwJQRKGqAo4SMTPCAJnUMNAg10oh10mScCDi4uhfAwH2yHEBygFQBwHKAHABygJQBc8WUAP6AnABymgjbrMlbrOxjkx/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMlzMzAXABygDiIW6zDAAwnH8BygABIG7y0IABzJUxcAHKAOLJAfsA');
+    const __system = Cell.fromBase64('te6cckECDwEAAqQAAQHAAQEFoNd1AgEU/wD0pBP0vPLICwMCAWIFBABxoXejBOC52Hq6WVz2PQnYc6yVCjbNBOE7rGpaVsj5ZkWnXlv74sRzBOBAq4A3AM7HKZywdVyOS2WHAnbQAdDTAwFxsMABkX+RcOIB+kAiUFVvBPhh7UTQ1AH4YtIAMJFtjoLbPOJZ2zwwMMj4QgHMfwHKAMntVA4GArpwIddJwh+VMCDXCx/eApJbf+AhghB9l0oJuo6eMdMfAYIQfZdKCbry4IGBAQHXAPQE9ARVIGwT2zx/4AHAAAHXScEhsI6V+EFvJBAjXwNwgQCCcFUgbW1t2zx/4HAHDAT0+EFvJDAy+CdvECKhggpiWgBmtgihggpiWgCgEqFxII7KJYEBASNZ9AxvoZIwbd+BAQFUVgBSUEEz9AxvoZQB1wAwkltt4iAgbvLQgFADoAEgbvLQgAIgbvLQgBJycFUgbW1t2zwBpFMGvBLmMWwzoXJwids8FEMwbW0MCwkIAQTbPAwBQshwAcsfbwABb4xtb4wB2zxvIgHJkyFus5YBbyJZzMnoMQoAuiDXSiHXSZcgwgAiwgCxjkoDbyKAfyLPMasCoQWrAlFVtgggwgCcIKoCFdcYUDPPFkAU3llvAlNBocIAmcgBbwJQRKGqAo4SMTPCAJnUMNAg10oh10mScCDi4uhfAwAQQ29tcGxldGUB9shxAcoBUAcBygBwAcoCUAXPFlAD+gJwAcpoI26zJW6zsY5MfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzJczMwFwAcoA4iFusw0AMJx/AcoAASBu8tCAAcyVMXABygDiyQH7AAACbSEQ9j0=');
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
-    initEcho_init_args({ $$type: 'Echo_init_args' })(builder);
+    initAirdrop_init_args({ $$type: 'Airdrop_init_args' })(builder);
     const __data = builder.endCell();
     return { code: __code, data: __data };
 }
 
-const Echo_errors: { [key: number]: { message: string } } = {
+const Airdrop_errors: { [key: number]: { message: string } } = {
     2: { message: `Stack undeflow` },
     3: { message: `Stack overflow` },
     4: { message: `Integer overflow` },
@@ -234,26 +286,26 @@ const Echo_errors: { [key: number]: { message: string } } = {
     136: { message: `Invalid address` },
 }
 
-export class Echo implements Contract {
+export class Airdrop implements Contract {
     
     static async init() {
-        return await Echo_init();
+        return await Airdrop_init();
     }
     
     static async fromInit() {
-        const init = await Echo_init();
+        const init = await Airdrop_init();
         const address = contractAddress(0, init);
-        return new Echo(address, init);
+        return new Airdrop(address, init);
     }
     
     static fromAddress(address: Address) {
-        return new Echo(address);
+        return new Airdrop(address);
     }
     
     readonly address: Address; 
     readonly init?: { code: Cell, data: Cell };
     readonly abi: ContractABI = {
-        errors: Echo_errors
+        errors: Airdrop_errors
     };
     
     private constructor(address: Address, init?: { code: Cell, data: Cell }) {
@@ -261,27 +313,19 @@ export class Echo implements Contract {
         this.init = init;
     }
     
-    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: string | Slice) {
+    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: AirdropTON_Without_Comment | null) {
         
         let body: Cell | null = null;
-        if (typeof message === 'string') {
-            body = beginCell().storeUint(0, 32).storeStringTail(message).endCell();
+        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'AirdropTON_Without_Comment') {
+            body = beginCell().store(storeAirdropTON_Without_Comment(message)).endCell();
         }
-        if (message && typeof message === 'object' && message instanceof Slice) {
-            body = message.asCell();
+        if (message === null) {
+            body = new Cell();
         }
         if (body === null) { throw new Error('Invalid message type'); }
         
         await provider.internal(via, { ...args, body: body });
         
-    }
-    
-    async getHello(provider: ContractProvider, src: string) {
-        let builder = new TupleBuilder();
-        builder.writeString(src);
-        let source = (await provider.get('hello', builder.build())).stack;
-        let result = source.readString();
-        return result;
     }
     
 }

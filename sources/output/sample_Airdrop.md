@@ -1,9 +1,9 @@
 # TACT Compilation Report
-Contract: TestTest
-BOC Size: 681 bytes
+Contract: Airdrop
+BOC Size: 678 bytes
 
 # Types
-Total Types: 5
+Total Types: 4
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -20,10 +20,6 @@ Signature: `SendParameters{bounce:bool,to:address,value:int257,mode:int257,body:
 ## AirdropTON_Without_Comment
 TLB: `airdrop_ton_without_comment#7d974a09 length:int257 user_list:dict<int, address> sending_value:dict<int, int> = AirdropTON_Without_Comment`
 Signature: `AirdropTON_Without_Comment{length:int257,user_list:dict<int, address>,sending_value:dict<int, int>}`
-
-## InputJetton
-TLB: `input_jetton#746ab1b5 length:int257 jetton_address:address user_list:dict<int, address> sending_value:dict<int, int> = InputJetton`
-Signature: `InputJetton{length:int257,jetton_address:address,user_list:dict<int, address>,sending_value:dict<int, int>}`
 
 # Get Methods
 Total Get Methods: 0
