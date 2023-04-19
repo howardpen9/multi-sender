@@ -1,7 +1,6 @@
-import { toNano, Dictionary, Address } from "ton";
+import { toNano, Dictionary, Address, beginCell } from "ton";
 import { ContractSystem } from "ton-emulator";
-// import { TestTest, storeInput } from "./output/sample_TestTest";
-import { Echo } from "./output/sample_Echo";
+import { Airdrop, storeAirdropTON_Without_Comment, storeJettonAirdrop } from "./output/sample_Airdrop";
 
 describe("contract", () => {
     it("should deploy correctly", async () => {
@@ -11,7 +10,7 @@ describe("contract", () => {
         let nonOwner = system.treasure("non-owner");
         let nonOwner2 = system.treasure("non-owner-2");
 
-        let contract = system.open(await TestTest.fromInit());
+        let contract = system.open(await Airdrop.fromInit());
         let track = system.track(contract.address);
         let logger = system.log(contract.address);
 
@@ -25,14 +24,25 @@ describe("contract", () => {
         myDict_value.set(1n, toNano("0.023"));
         myDict_value.set(2n, toNano("0.01"));
 
+        let packed_2 = beginCell()
+        .store(
+            storeAirdropTON_Without_Comment({
+                $$type: "AirdropTON_Without_Comment",
+                length: 7n, // How many items
+                ton_user_list: user_list,
+                ton_sending_value: myDict_value,
+            })
+        )
+        .endCell();
+
         await contract.send(
             owner,
             { value: toNano(1) },
             {
-                $$type: "Input",
-                length: 2n,
-                user_list: user_list, // Dictionary<bigint, Address>
-                sending_value: myDict_value,
+                $$type: "AirdropTON_Without_Comment",
+                length: 7n, // How many items
+                ton_user_list: user_list,
+                ton_sending_value: myDict_value,
             }
         );
         await system.run();
