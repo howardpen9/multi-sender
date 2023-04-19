@@ -190,41 +190,41 @@ function dictValueParserSendParameters(): DictionaryValue<SendParameters> {
 export type AirdropTON_Without_Comment = {
     $$type: 'AirdropTON_Without_Comment';
     length: bigint;
-    user_list: Dictionary<bigint, Address>;
-    sending_value: Dictionary<bigint, bigint>;
+    ton_user_list: Dictionary<bigint, Address>;
+    ton_sending_value: Dictionary<bigint, bigint>;
 }
 
 export function storeAirdropTON_Without_Comment(src: AirdropTON_Without_Comment) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(2107066889, 32);
+        b_0.storeUint(827956158, 32);
         b_0.storeInt(src.length, 257);
-        b_0.storeDict(src.user_list, Dictionary.Keys.BigInt(257), Dictionary.Values.Address());
-        b_0.storeDict(src.sending_value, Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257));
+        b_0.storeDict(src.ton_user_list, Dictionary.Keys.BigInt(257), Dictionary.Values.Address());
+        b_0.storeDict(src.ton_sending_value, Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257));
     };
 }
 
 export function loadAirdropTON_Without_Comment(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 2107066889) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 827956158) { throw Error('Invalid prefix'); }
     let _length = sc_0.loadIntBig(257);
-    let _user_list = Dictionary.load(Dictionary.Keys.BigInt(257), Dictionary.Values.Address(), sc_0);
-    let _sending_value = Dictionary.load(Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257), sc_0);
-    return { $$type: 'AirdropTON_Without_Comment' as const, length: _length, user_list: _user_list, sending_value: _sending_value };
+    let _ton_user_list = Dictionary.load(Dictionary.Keys.BigInt(257), Dictionary.Values.Address(), sc_0);
+    let _ton_sending_value = Dictionary.load(Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257), sc_0);
+    return { $$type: 'AirdropTON_Without_Comment' as const, length: _length, ton_user_list: _ton_user_list, ton_sending_value: _ton_sending_value };
 }
 
 function loadTupleAirdropTON_Without_Comment(source: TupleReader) {
     let _length = source.readBigNumber();
-    let _user_list = Dictionary.loadDirect(Dictionary.Keys.BigInt(257), Dictionary.Values.Address(), source.readCellOpt());
-    let _sending_value = Dictionary.loadDirect(Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257), source.readCellOpt());
-    return { $$type: 'AirdropTON_Without_Comment' as const, length: _length, user_list: _user_list, sending_value: _sending_value };
+    let _ton_user_list = Dictionary.loadDirect(Dictionary.Keys.BigInt(257), Dictionary.Values.Address(), source.readCellOpt());
+    let _ton_sending_value = Dictionary.loadDirect(Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257), source.readCellOpt());
+    return { $$type: 'AirdropTON_Without_Comment' as const, length: _length, ton_user_list: _ton_user_list, ton_sending_value: _ton_sending_value };
 }
 
 function storeTupleAirdropTON_Without_Comment(source: AirdropTON_Without_Comment) {
     let builder = new TupleBuilder();
     builder.writeNumber(source.length);
-    builder.writeCell(source.user_list.size > 0 ? beginCell().storeDictDirect(source.user_list, Dictionary.Keys.BigInt(257), Dictionary.Values.Address()).endCell() : null);
-    builder.writeCell(source.sending_value.size > 0 ? beginCell().storeDictDirect(source.sending_value, Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257)).endCell() : null);
+    builder.writeCell(source.ton_user_list.size > 0 ? beginCell().storeDictDirect(source.ton_user_list, Dictionary.Keys.BigInt(257), Dictionary.Values.Address()).endCell() : null);
+    builder.writeCell(source.ton_sending_value.size > 0 ? beginCell().storeDictDirect(source.ton_sending_value, Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257)).endCell() : null);
     return builder.build();
 }
 
@@ -235,6 +235,135 @@ function dictValueParserAirdropTON_Without_Comment(): DictionaryValue<AirdropTON
         },
         parse: (src) => {
             return loadAirdropTON_Without_Comment(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type JettonAirdrop = {
+    $$type: 'JettonAirdrop';
+    length: bigint;
+    sender_jetton_wallet: Address;
+    jetton_user_list: Dictionary<bigint, Address>;
+    jetton_sending_value: Dictionary<bigint, bigint>;
+}
+
+export function storeJettonAirdrop(src: JettonAirdrop) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(4369, 32);
+        b_0.storeInt(src.length, 257);
+        b_0.storeAddress(src.sender_jetton_wallet);
+        b_0.storeDict(src.jetton_user_list, Dictionary.Keys.BigInt(257), Dictionary.Values.Address());
+        b_0.storeDict(src.jetton_sending_value, Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257));
+    };
+}
+
+export function loadJettonAirdrop(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 4369) { throw Error('Invalid prefix'); }
+    let _length = sc_0.loadIntBig(257);
+    let _sender_jetton_wallet = sc_0.loadAddress();
+    let _jetton_user_list = Dictionary.load(Dictionary.Keys.BigInt(257), Dictionary.Values.Address(), sc_0);
+    let _jetton_sending_value = Dictionary.load(Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257), sc_0);
+    return { $$type: 'JettonAirdrop' as const, length: _length, sender_jetton_wallet: _sender_jetton_wallet, jetton_user_list: _jetton_user_list, jetton_sending_value: _jetton_sending_value };
+}
+
+function loadTupleJettonAirdrop(source: TupleReader) {
+    let _length = source.readBigNumber();
+    let _sender_jetton_wallet = source.readAddress();
+    let _jetton_user_list = Dictionary.loadDirect(Dictionary.Keys.BigInt(257), Dictionary.Values.Address(), source.readCellOpt());
+    let _jetton_sending_value = Dictionary.loadDirect(Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257), source.readCellOpt());
+    return { $$type: 'JettonAirdrop' as const, length: _length, sender_jetton_wallet: _sender_jetton_wallet, jetton_user_list: _jetton_user_list, jetton_sending_value: _jetton_sending_value };
+}
+
+function storeTupleJettonAirdrop(source: JettonAirdrop) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.length);
+    builder.writeAddress(source.sender_jetton_wallet);
+    builder.writeCell(source.jetton_user_list.size > 0 ? beginCell().storeDictDirect(source.jetton_user_list, Dictionary.Keys.BigInt(257), Dictionary.Values.Address()).endCell() : null);
+    builder.writeCell(source.jetton_sending_value.size > 0 ? beginCell().storeDictDirect(source.jetton_sending_value, Dictionary.Keys.BigInt(257), Dictionary.Values.BigInt(257)).endCell() : null);
+    return builder.build();
+}
+
+function dictValueParserJettonAirdrop(): DictionaryValue<JettonAirdrop> {
+    return {
+        serialize: (src, buidler) => {
+            buidler.storeRef(beginCell().store(storeJettonAirdrop(src)).endCell());
+        },
+        parse: (src) => {
+            return loadJettonAirdrop(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type TokenTransfer = {
+    $$type: 'TokenTransfer';
+    queryId: bigint;
+    amount: bigint;
+    destination: Address;
+    response_destination: Address;
+    custom_payload: Cell | null;
+    forward_ton_amount: bigint;
+    forward_payload: Cell;
+}
+
+export function storeTokenTransfer(src: TokenTransfer) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(260734629, 32);
+        b_0.storeUint(src.queryId, 64);
+        b_0.storeCoins(src.amount);
+        b_0.storeAddress(src.destination);
+        b_0.storeAddress(src.response_destination);
+        if (src.custom_payload !== null && src.custom_payload !== undefined) { b_0.storeBit(true).storeRef(src.custom_payload); } else { b_0.storeBit(false); }
+        b_0.storeCoins(src.forward_ton_amount);
+        b_0.storeBuilder(src.forward_payload.asBuilder());
+    };
+}
+
+export function loadTokenTransfer(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 260734629) { throw Error('Invalid prefix'); }
+    let _queryId = sc_0.loadUintBig(64);
+    let _amount = sc_0.loadCoins();
+    let _destination = sc_0.loadAddress();
+    let _response_destination = sc_0.loadAddress();
+    let _custom_payload = sc_0.loadBit() ? sc_0.loadRef() : null;
+    let _forward_ton_amount = sc_0.loadCoins();
+    let _forward_payload = sc_0.asCell();
+    return { $$type: 'TokenTransfer' as const, queryId: _queryId, amount: _amount, destination: _destination, response_destination: _response_destination, custom_payload: _custom_payload, forward_ton_amount: _forward_ton_amount, forward_payload: _forward_payload };
+}
+
+function loadTupleTokenTransfer(source: TupleReader) {
+    let _queryId = source.readBigNumber();
+    let _amount = source.readBigNumber();
+    let _destination = source.readAddress();
+    let _response_destination = source.readAddress();
+    let _custom_payload = source.readCellOpt();
+    let _forward_ton_amount = source.readBigNumber();
+    let _forward_payload = source.readCell();
+    return { $$type: 'TokenTransfer' as const, queryId: _queryId, amount: _amount, destination: _destination, response_destination: _response_destination, custom_payload: _custom_payload, forward_ton_amount: _forward_ton_amount, forward_payload: _forward_payload };
+}
+
+function storeTupleTokenTransfer(source: TokenTransfer) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.queryId);
+    builder.writeNumber(source.amount);
+    builder.writeAddress(source.destination);
+    builder.writeAddress(source.response_destination);
+    builder.writeCell(source.custom_payload);
+    builder.writeNumber(source.forward_ton_amount);
+    builder.writeSlice(source.forward_payload);
+    return builder.build();
+}
+
+function dictValueParserTokenTransfer(): DictionaryValue<TokenTransfer> {
+    return {
+        serialize: (src, buidler) => {
+            buidler.storeRef(beginCell().store(storeTokenTransfer(src)).endCell());
+        },
+        parse: (src) => {
+            return loadTokenTransfer(src.loadRef().beginParse());
         }
     }
 }
@@ -250,8 +379,8 @@ function initAirdrop_init_args(src: Airdrop_init_args) {
 }
 
 async function Airdrop_init() {
-    const __code = Cell.fromBase64('te6ccgECDQEAApoAART/APSkE/S88sgLAQIBYgIDAnbQAdDTAwFxsMABkX+RcOIB+kAiUFVvBPhh7UTQ1AH4YtIAMJFtjoLbPOJZ2zwwMMj4QgHMfwHKAMntVAQFAHGhd6ME4LnYerpZXPY9CdhzrJUKNs0E4TusalpWyPlmRadeW/vixHME4ECrgDcAzscpnLB1XI5LZYcAAm0CunAh10nCH5UwINcLH94Cklt/4CGCEH2XSgm6jp4x0x8BghB9l0oJuvLggYEBAdcA9AT0BFUgbBPbPH/gAcAAAddJwSGwjpX4QW8kECNfA3CBAIJwVSBtbW3bPH/gcAYLBPT4QW8kMDL4J28QIqGCCmJaAGa2CKGCCmJaAKASoXEgjsolgQEBI1n0DG+hkjBt34EBAVRWAFJQQTP0DG+hlAHXADCSW23iICBu8tCAUAOgASBu8tCAAiBu8tCAEnJwVSBtbW3bPAGkUwa8EuYxbDOhcnCJ2zwUQzBtbQsHCAkAEENvbXBsZXRlAULIcAHLH28AAW+MbW+MAds8byIByZMhbrOWAW8iWczJ6DEKAQTbPAsAuiDXSiHXSZcgwgAiwgCxjkoDbyKAfyLPMasCoQWrAlFVtgggwgCcIKoCFdcYUDPPFkAU3llvAlNBocIAmcgBbwJQRKGqAo4SMTPCAJnUMNAg10oh10mScCDi4uhfAwH2yHEBygFQBwHKAHABygJQBc8WUAP6AnABymgjbrMlbrOxjkx/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMlzMzAXABygDiIW6zDAAwnH8BygABIG7y0IABzJUxcAHKAOLJAfsA');
-    const __system = Cell.fromBase64('te6cckECDwEAAqQAAQHAAQEFoNd1AgEU/wD0pBP0vPLICwMCAWIFBABxoXejBOC52Hq6WVz2PQnYc6yVCjbNBOE7rGpaVsj5ZkWnXlv74sRzBOBAq4A3AM7HKZywdVyOS2WHAnbQAdDTAwFxsMABkX+RcOIB+kAiUFVvBPhh7UTQ1AH4YtIAMJFtjoLbPOJZ2zwwMMj4QgHMfwHKAMntVA4GArpwIddJwh+VMCDXCx/eApJbf+AhghB9l0oJuo6eMdMfAYIQfZdKCbry4IGBAQHXAPQE9ARVIGwT2zx/4AHAAAHXScEhsI6V+EFvJBAjXwNwgQCCcFUgbW1t2zx/4HAHDAT0+EFvJDAy+CdvECKhggpiWgBmtgihggpiWgCgEqFxII7KJYEBASNZ9AxvoZIwbd+BAQFUVgBSUEEz9AxvoZQB1wAwkltt4iAgbvLQgFADoAEgbvLQgAIgbvLQgBJycFUgbW1t2zwBpFMGvBLmMWwzoXJwids8FEMwbW0MCwkIAQTbPAwBQshwAcsfbwABb4xtb4wB2zxvIgHJkyFus5YBbyJZzMnoMQoAuiDXSiHXSZcgwgAiwgCxjkoDbyKAfyLPMasCoQWrAlFVtgggwgCcIKoCFdcYUDPPFkAU3llvAlNBocIAmcgBbwJQRKGqAo4SMTPCAJnUMNAg10oh10mScCDi4uhfAwAQQ29tcGxldGUB9shxAcoBUAcBygBwAcoCUAXPFlAD+gJwAcpoI26zJW6zsY5MfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzJczMwFwAcoA4iFusw0AMJx/AcoAASBu8tCAAcyVMXABygDiyQH7AAACbSEQ9j0=');
+    const __code = Cell.fromBase64('te6ccgECEwEAA40AART/APSkE/S88sgLAQIBYgIDAnbQAdDTAwFxsMABkX+RcOIB+kAiUFVvBPhh7UTQ1AH4YtIAMJFtjoLbPOJZ2zwwMMj4QgHMfwHKAMntVAQFAHGhd6ME4LnYerpZXPY9CdhzrJUKNs0E4TusalpWyPlmRadeW/vixHME4ECrgDcAzscpnLB1XI5LZYcAAm0EqHAh10nCH5UwINcLH94Cklt/4CGBERG6j7Ix0x8BgRERuvLggYEBAdcA+kABAfQE9ARVMGwU+EFvJDAyUGbbPHAgiuYxbEOhEts8f+AhghAxWZu+ugwGDQcD2CWBAQEjWfQMb6GSMG3fgQEBVFYAUlBBM/QMb6GUAdcAMJJbbeIgIG7y0IAToIIQBMS0AHJwBSBu8tCABCBu8tCA+ChtgghMS0DbPCpQllBZFEMwyFVg2zzJKkQUA1BVFEMwbW3bPAGkUwe8EggJEQT+j/wx0x8BghAxWZu+uvLggYEBAdcA9AT0BFUgbBP4QW8kMDJQVds8cCCOyiWBAQEjWfQMb6GSMG3fgQEBVFYAUlBBM/QMb6GUAdcAMJJbbeIgIG7y0IBQA6ABIG7y0IACIG7y0IAScnBVIG1tbds8AaRTBrwS5jFsM6ES2zx/4AwRDQ4CCNs82zwKCwBYghAPin6lUAjLHxbLP1AE+gJYzxYBzxYhbrOVfwHKAMyUcDLKAOIB+gIBzxYABMjJAALQACz4J28QIaGCCcnDgGa2CKGCCcnDgKChAipycIuENvbXBsZXRljbPBRDMG1t2zwPEQFEAcAAAddJwSGwjpX4QW8kECNfA3CBAIJwVSBtbW3bPH/gcBEBQshwAcsfbwABb4xtb4wB2zxvIgHJkyFus5YBbyJZzMnoMRAAuiDXSiHXSZcgwgAiwgCxjkoDbyKAfyLPMasCoQWrAlFVtgggwgCcIKoCFdcYUDPPFkAU3llvAlNBocIAmcgBbwJQRKGqAo4SMTPCAJnUMNAg10oh10mScCDi4uhfAwH2yHEBygFQBwHKAHABygJQBc8WUAP6AnABymgjbrMlbrOxjkx/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMlzMzAXABygDiIW6zEgAwnH8BygABIG7y0IABzJUxcAHKAOLJAfsA');
+    const __system = Cell.fromBase64('te6cckECFQEAA5cAAQHAAQEFoNd1AgEU/wD0pBP0vPLICwMCAWIFBABxoXejBOC52Hq6WVz2PQnYc6yVCjbNBOE7rGpaVsj5ZkWnXlv74sRzBOBAq4A3AM7HKZywdVyOS2WHAnbQAdDTAwFxsMABkX+RcOIB+kAiUFVvBPhh7UTQ1AH4YtIAMJFtjoLbPOJZ2zwwMMj4QgHMfwHKAMntVBQGBKhwIddJwh+VMCDXCx/eApJbf+AhgRERuo+yMdMfAYEREbry4IGBAQHXAPpAAQH0BPQEVTBsFPhBbyQwMlBm2zxwIIrmMWxDoRLbPH/gIYIQMVmbvroTDAkHBP6P/DHTHwGCEDFZm7668uCBgQEB1wD0BPQEVSBsE/hBbyQwMlBV2zxwII7KJYEBASNZ9AxvoZIwbd+BAQFUVgBSUEEz9AxvoZQB1wAwkltt4iAgbvLQgFADoAEgbvLQgAIgbvLQgBJycFUgbW1t2zwBpFMGvBLmMWwzoRLbPH/gEw0JCAFEAcAAAddJwSGwjpX4QW8kECNfA3CBAIJwVSBtbW3bPH/gcA0CKnJwi4Q29tcGxldGWNs8FEMwbW3bPAoNAULIcAHLH28AAW+MbW+MAds8byIByZMhbrOWAW8iWczJ6DELALog10oh10mXIMIAIsIAsY5KA28igH8izzGrAqEFqwJRVbYIIMIAnCCqAhXXGFAzzxZAFN5ZbwJTQaHCAJnIAW8CUEShqgKOEjEzwgCZ1DDQINdKIddJknAg4uLoXwMD2CWBAQEjWfQMb6GSMG3fgQEBVFYAUlBBM/QMb6GUAdcAMJJbbeIgIG7y0IAToIIQBMS0AHJwBSBu8tCABCBu8tCA+ChtgghMS0DbPCpQllBZFEMwyFVg2zzJKkQUA1BVFEMwbW3bPAGkUwe8EhAPDQH2yHEBygFQBwHKAHABygJQBc8WUAP6AnABymgjbrMlbrOxjkx/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMlzMzAXABygDiIW6zDgAwnH8BygABIG7y0IABzJUxcAHKAOLJAfsAAFiCEA+KfqVQCMsfFss/UAT6AljPFgHPFiFus5V/AcoAzJRwMsoA4gH6AgHPFgII2zzbPBIRAALQAATIyQAs+CdvECGhggnJw4BmtgihggnJw4CgoQACbd2McuI=');
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
@@ -313,9 +442,12 @@ export class Airdrop implements Contract {
         this.init = init;
     }
     
-    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: AirdropTON_Without_Comment | null) {
+    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: JettonAirdrop | AirdropTON_Without_Comment | null) {
         
         let body: Cell | null = null;
+        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'JettonAirdrop') {
+            body = beginCell().store(storeJettonAirdrop(message)).endCell();
+        }
         if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'AirdropTON_Without_Comment') {
             body = beginCell().store(storeAirdropTON_Without_Comment(message)).endCell();
         }

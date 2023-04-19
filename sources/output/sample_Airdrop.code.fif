@@ -4,6 +4,7 @@ PROGRAM{
   DECLPROC __tact_context_get
   DECLPROC __tact_verify_address
   DECLPROC __tact_store_bool
+  DECLPROC __tact_load_address
   DECLPROC __tact_store_address
   DECLPROC __tact_dict_get_int_int
   DECLPROC __tact_dict_get_int_slice
@@ -12,13 +13,23 @@ PROGRAM{
   DECLPROC __tact_string_builder_end
   DECLPROC __tact_string_builder_append
   DECLPROC __gen_read_AirdropTON_Without_Comment
+  DECLPROC __gen_read_JettonAirdrop
+  DECLPROC __gen_write_TokenTransfer
+  DECLPROC __gen_writecell_TokenTransfer
   DECLPROC $__gen_Airdrop_init
   DECLPROC __gen_load_Airdrop
   DECLPROC __gen_store_Airdrop
+  DECLPROC $emptyCell
+  DECLPROC $__gen_Cell_asSlice
+  DECLPROC $emptySlice
   DECLPROC $send
   DECLPROC $__gen_String_asComment
-  DECLPROC __gen_constructor_SendParameters$to_value_mode_bounce
   DECLPROC __gen_constructor_SendParameters$to_value_mode_bounce_body
+  DECLPROC $__gen_Airdrop_completed
+  DECLPROC $__gen_Airdrop_msgValue
+  DECLPROC __gen_constructor_TokenTransfer$queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload
+  DECLPROC $__gen_Airdrop_receive_JettonAirdrop
+  DECLPROC __gen_constructor_SendParameters$to_value_mode_bounce
   DECLPROC $__gen_Airdrop_receive_AirdropTON_Without_Comment
   DECLPROC $__gen_Airdrop_receive
   DECLPROC __gen_router_Airdrop
@@ -50,6 +61,10 @@ PROGRAM{
   __tact_store_bool PROCINLINE:<{
     SWAP
     1 STI
+  }>
+  __tact_load_address PROCINLINE:<{
+    LDMSGADDR
+    SWAP
   }>
   __tact_store_address PROCINLINE:<{
     STSLICER
@@ -177,7 +192,7 @@ PROGRAM{
   __gen_read_AirdropTON_Without_Comment PROCINLINE:<{
     32 LDU
     SWAP
-    2107066889 PUSHINT
+    827956158 PUSHINT
     EQUAL
     129 THROWIFNOT
     257 PUSHINT
@@ -185,6 +200,56 @@ PROGRAM{
     LDDICT
     LDDICT
     3 -ROLL
+  }>
+  __gen_read_JettonAirdrop PROCINLINE:<{
+    32 LDU
+    SWAP
+    4369 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    257 PUSHINT
+    LDIX
+    __tact_load_address INLINECALLDICT
+    SWAP
+    LDDICT
+    LDDICT
+    4 -ROLL
+  }>
+  __gen_write_TokenTransfer PROCREF:<{
+    260734629 PUSHINT
+    s0 s8 XCHG2
+    32 STU
+    s1 s6 XCHG
+    64 STU
+    s0 s4 XCHG2
+    STGRAMS
+    ROT
+    __tact_store_address INLINECALLDICT
+    SWAP
+    __tact_store_address INLINECALLDICT
+    OVER
+    ISNULL
+    NOT
+    IF:<{
+      TRUE
+      SWAP
+      1 STI
+      STREF
+    }>ELSE<{
+      FALSE
+      s2 POP
+      1 STI
+    }>
+    SWAP
+    STGRAMS
+    SWAP
+    STSLICER
+  }>
+  __gen_writecell_TokenTransfer PROCINLINE:<{
+    NEWC
+    7 -ROLL
+    __gen_write_TokenTransfer INLINECALLDICT
+    ENDC
   }>
   $__gen_Airdrop_init PROCREF:<{
     PUSHNULL
@@ -214,6 +279,17 @@ PROGRAM{
     1 STI
     ENDC
     c4 POP
+  }>
+  $emptyCell PROCREF:<{
+    NEWC
+    ENDC
+  }>
+  $__gen_Cell_asSlice PROCREF:<{
+    CTOS
+  }>
+  $emptySlice PROCREF:<{
+    $emptyCell INLINECALLDICT
+    $__gen_Cell_asSlice INLINECALLDICT
   }>
   $send PROCREF:<{
     NEWC
@@ -320,15 +396,94 @@ PROGRAM{
     __tact_string_builder_append INLINECALLDICT
     __tact_string_builder_end INLINECALLDICT
   }>
-  __gen_constructor_SendParameters$to_value_mode_bounce PROCINLINE:<{
-    3 -ROLL
-    PUSHNULL
-    PUSHNULL
-    PUSHNULL
-  }>
   __gen_constructor_SendParameters$to_value_mode_bounce_body PROCINLINE:<{
     s1 s4 XCHG
     s3 s3 s0 XCHG3
+    PUSHNULL
+    PUSHNULL
+  }>
+  $__gen_Airdrop_completed PROCREF:<{
+    2 PUSHINT
+    FALSE
+    B{b5ee9c7241010101000a000010436f6d706c657465f8ddae36} B>boc <s PUSHSLICE
+    $__gen_String_asComment INLINECALLDICT
+    __gen_constructor_SendParameters$to_value_mode_bounce_body INLINECALLDICT
+    $send INLINECALLDICT
+  }>
+  $__gen_Airdrop_msgValue PROCREF:<{
+    __tact_my_balance INLINECALLDICT
+    OVER
+    SUB
+    30000000 PUSHINT
+    TUCK
+    MIN
+    SUB
+    30000000 PUSHINT
+    ADD
+    SUB
+  }>
+  __gen_constructor_TokenTransfer$queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload PROCINLINE:<{
+  }>
+  $__gen_Airdrop_receive_JettonAirdrop PROCINLINE:<{
+    __tact_context_get INLINECALLDICT
+    DROP
+    s2 POP
+    s6 s6 XCHG2
+    $__gen_Airdrop_msgValue INLINECALLDICT
+    0 PUSHINT
+    DUP
+    UNTIL:<{
+      s5 PUSH
+      257 PUSHINT
+      s3 PUSH
+      __tact_dict_get_int_slice INLINECALLDICT
+      257 PUSHINT
+      s6 s(-1) s(-1) PUXCPU
+      s5 s(-1) PUXC
+      __tact_dict_get_int_int INLINECALLDICT
+      DUP
+      __tact_not_null INLINECALLDICT
+      s1 s3 XCHG
+      ADD
+      80000000 PUSHINT
+      2 PUSHINT
+      FALSE
+      s0 s5 XCHG
+      __tact_not_null INLINECALLDICT
+      s0 s4 XCHG
+      __tact_not_null INLINECALLDICT
+      MYADDR
+      PUSHNULL
+      5000000 PUSHINT
+      $emptySlice INLINECALLDICT
+      s10 PUSH
+      s9 s6 XCHG2
+      s5 s9 XCHG2
+      s1 s4 XCHG
+      s3 s3 s0 XCHG3
+      __gen_constructor_TokenTransfer$queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload INLINECALLDICT
+      __gen_writecell_TokenTransfer INLINECALLDICT
+      s10 PUSH
+      s4 s1 s4 XCHG3
+      s0 s3 XCHG
+      s5 s5 XCHG2
+      __gen_constructor_SendParameters$to_value_mode_bounce_body INLINECALLDICT
+      $send INLINECALLDICT
+      SWAP
+      INC
+      s0 s7 PUSH2
+      GREATER
+      s1 s2 XCHG
+    }>
+    NIP
+    4 3 BLKDROP2
+    SUB
+    s1 s2 XCHG
+    $__gen_Airdrop_completed INLINECALLDICT
+  }>
+  __gen_constructor_SendParameters$to_value_mode_bounce PROCINLINE:<{
+    3 -ROLL
+    PUSHNULL
     PUSHNULL
     PUSHNULL
   }>
@@ -336,18 +491,9 @@ PROGRAM{
     __tact_context_get INLINECALLDICT
     DROP
     s2 POP
-    __tact_my_balance INLINECALLDICT
-    s2 PUSH
-    SUB
-    40000000 PUSHINT
-    TUCK
-    MIN
-    SUB
-    40000000 PUSHINT
-    ADD
-    s1 s2 XCHG
-    SUB
-    1 PUSHINT
+    s5 s5 XCHG2
+    $__gen_Airdrop_msgValue INLINECALLDICT
+    0 PUSHINT
     DUP
     UNTIL:<{
       s5 PUSH
@@ -380,12 +526,8 @@ PROGRAM{
     NIP
     3 3 BLKDROP2
     SUB
-    2 PUSHINT
-    FALSE
-    B{b5ee9c7241010101000a000010436f6d706c657465f8ddae36} B>boc <s PUSHSLICE
-    $__gen_String_asComment INLINECALLDICT
-    __gen_constructor_SendParameters$to_value_mode_bounce_body INLINECALLDICT
-    $send INLINECALLDICT
+    s1 s2 XCHG
+    $__gen_Airdrop_completed INLINECALLDICT
   }>
   $__gen_Airdrop_receive PROCINLINE:<{
     __tact_context_get INLINECALLDICT
@@ -413,7 +555,17 @@ PROGRAM{
       TRUE
     }>
     OVER
-    2107066889 PUSHINT
+    4369 PUSHINT
+    EQUAL
+    IFJMP:<{
+      NIP
+      __gen_read_JettonAirdrop INLINECALLDICT
+      1 4 BLKDROP2
+      $__gen_Airdrop_receive_JettonAirdrop INLINECALLDICT
+      TRUE
+    }>
+    OVER
+    827956158 PUSHINT
     EQUAL
     IFJMP:<{
       NIP
@@ -465,7 +617,7 @@ PROGRAM{
     42980537499636128163026532310500881091 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d5539446d3559676d6e685269655068707154697546427162536368624d33413364544c765939635367565152} PUSHSLICE
+    x{697066733a2f2f516d54507a4d69506831415a4e45754e5235756b4d666f41477562413275574550534a31467576555a4739775975} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH

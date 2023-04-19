@@ -22,6 +22,12 @@ builder __tact_store_bool(builder b, int v) inline {
     return b;
 }
 
+(slice, slice) __tact_load_address(slice cs) inline {
+    slice raw = cs~load_msg_addr();
+    __tact_verify_address(raw);
+    return (cs, raw);
+}
+
 builder __tact_store_address(builder b, slice address) inline {
     __tact_verify_address(address);
     b = b.store_slice(address);
@@ -104,11 +110,37 @@ cell __tact_string_builder_end(tuple builders) inline {
 }
 
 (slice, ((int, cell, cell))) __gen_read_AirdropTON_Without_Comment(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 2107066889);
+    throw_unless(129, sc_0~load_uint(32) == 827956158);
     var v'length = sc_0~load_int(257);
-    var v'user_list = sc_0~load_dict();
-    var v'sending_value = sc_0~load_dict();
-    return (sc_0, (v'length, v'user_list, v'sending_value));
+    var v'ton_user_list = sc_0~load_dict();
+    var v'ton_sending_value = sc_0~load_dict();
+    return (sc_0, (v'length, v'ton_user_list, v'ton_sending_value));
+}
+
+(slice, ((int, slice, cell, cell))) __gen_read_JettonAirdrop(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 4369);
+    var v'length = sc_0~load_int(257);
+    var v'sender_jetton_wallet = sc_0~__tact_load_address();
+    var v'jetton_user_list = sc_0~load_dict();
+    var v'jetton_sending_value = sc_0~load_dict();
+    return (sc_0, (v'length, v'sender_jetton_wallet, v'jetton_user_list, v'jetton_sending_value));
+}
+
+builder __gen_write_TokenTransfer(builder build_0, (int, int, slice, slice, cell, int, slice) v) inline_ref {
+    var (v'queryId, v'amount, v'destination, v'response_destination, v'custom_payload, v'forward_ton_amount, v'forward_payload) = v;
+    build_0 = store_uint(build_0, 260734629, 32);
+    build_0 = build_0.store_uint(v'queryId, 64);
+    build_0 = build_0.store_coins(v'amount);
+    build_0 = __tact_store_address(build_0, v'destination);
+    build_0 = __tact_store_address(build_0, v'response_destination);
+    build_0 = ~ null?(v'custom_payload) ? build_0.store_int(true, 1).store_ref(v'custom_payload) : build_0.store_int(false, 1);
+    build_0 = build_0.store_coins(v'forward_ton_amount);
+    build_0 = build_0.store_slice(v'forward_payload);
+    return build_0;
+}
+
+cell __gen_writecell_TokenTransfer((int, int, slice, slice, cell, int, slice) v) inline {
+    return __gen_write_TokenTransfer(begin_cell(), v).end_cell();
 }
 
 tuple $__gen_Airdrop_init() impure inline_ref {
@@ -136,6 +168,19 @@ tuple __gen_load_Airdrop() impure inline {
 
 ;; String "Complete"
 slice __gen_str_339420938() asm "B{b5ee9c7241010101000a000010436f6d706c657465f8ddae36} B>boc <s PUSHSLICE";
+
+cell $emptyCell() impure inline_ref {
+    return end_cell(begin_cell());
+}
+
+slice $__gen_Cell_asSlice(cell $self) impure inline_ref {
+    var ($self) = $self;
+    return begin_parse($self);
+}
+
+slice $emptySlice() impure inline_ref {
+    return $__gen_Cell_asSlice($emptyCell());
+}
 
 () $send((int, slice, int, int, cell, cell, cell) $params) impure inline_ref {
     var (($params'bounce, $params'to, $params'value, $params'mode, $params'body, $params'code, $params'data)) = $params;
@@ -187,32 +232,65 @@ cell $__gen_String_asComment(slice $self) impure inline_ref {
     return __tact_string_builder_end($b);
 }
 
-((int, slice, int, int, cell, cell, cell)) __gen_constructor_SendParameters$to_value_mode_bounce(slice to, int value, int mode, int bounce) inline {
-    return (bounce, to, value, mode, null(), null(), null());
-}
-
 ((int, slice, int, int, cell, cell, cell)) __gen_constructor_SendParameters$to_value_mode_bounce_body(slice to, int value, int mode, int bounce, cell body) inline {
     return (bounce, to, value, mode, body, null(), null());
 }
 
+(tuple, ()) $__gen_Airdrop_completed(tuple $self, slice $to_address, int $value) impure inline_ref {
+    var ($self) = $self;
+    $send(__gen_constructor_SendParameters$to_value_mode_bounce_body($to_address, $value, 2, false, $__gen_String_asComment(__gen_str_339420938())));
+    return ($self, ());
+}
+
+(tuple, int) $__gen_Airdrop_msgValue(tuple $self, int $msgValue) impure inline_ref {
+    var ($self) = $self;
+    int $tonBalanceBeforeMsg = (__tact_my_balance() - $msgValue);
+    int $storageFee = (30000000 - min($tonBalanceBeforeMsg, 30000000));
+    $msgValue = ($msgValue - ($storageFee + 30000000));
+    return ($self, $msgValue);
+}
+
+((int, int, slice, slice, cell, int, slice)) __gen_constructor_TokenTransfer$queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload(int queryId, int amount, slice destination, slice response_destination, cell custom_payload, int forward_ton_amount, slice forward_payload) inline {
+    return (queryId, amount, destination, response_destination, custom_payload, forward_ton_amount, forward_payload);
+}
+
+((tuple), ()) $__gen_Airdrop_receive_JettonAirdrop(tuple $self, (int, slice, cell, cell) $msg) impure inline {
+    var $self = $self;
+    var ($msg'length, $msg'sender_jetton_wallet, $msg'jetton_user_list, $msg'jetton_sending_value) = $msg;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    int $msgValue = $self~$__gen_Airdrop_msgValue($ctx'value);
+    int $value_default = 0;
+    int $sendingValue = 0;
+    do {
+        slice $receiver = __tact_dict_get_int_slice($msg'jetton_user_list, 257, $value_default);
+        int $jetton_send_amount = __tact_dict_get_int_int($msg'jetton_sending_value, 257, $value_default, 257);
+        $sendingValue = ($sendingValue + __tact_not_null($jetton_send_amount));
+        $send(__gen_constructor_SendParameters$to_value_mode_bounce_body($msg'sender_jetton_wallet, 80000000, 2, false, __gen_writecell_TokenTransfer(__gen_constructor_TokenTransfer$queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload($value_default, __tact_not_null($jetton_send_amount), __tact_not_null($receiver), my_address(), null(), 5000000, $emptySlice()))));
+        $value_default = ($value_default + 1);
+    } until (($value_default > $msg'length));
+    $self~$__gen_Airdrop_completed($ctx'sender, ($msgValue - $sendingValue));
+    return ($self, ());
+}
+
+((int, slice, int, int, cell, cell, cell)) __gen_constructor_SendParameters$to_value_mode_bounce(slice to, int value, int mode, int bounce) inline {
+    return (bounce, to, value, mode, null(), null(), null());
+}
+
 ((tuple), ()) $__gen_Airdrop_receive_AirdropTON_Without_Comment(tuple $self, (int, cell, cell) $msg) impure inline {
     var $self = $self;
-    var ($msg'length, $msg'user_list, $msg'sending_value) = $msg;
+    var ($msg'length, $msg'ton_user_list, $msg'ton_sending_value) = $msg;
     var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
-    int $msgValue = $ctx'value;
-    int $tonBalanceBeforeMsg = (__tact_my_balance() - $msgValue);
-    int $storageFee = (40000000 - min($tonBalanceBeforeMsg, 40000000));
-    $msgValue = ($msgValue - ($storageFee + 40000000));
-    int $value_default = 1;
-    int $sendingValue = 1;
+    int $msgValue = $self~$__gen_Airdrop_msgValue($ctx'value);
+    int $value_default = 0;
+    int $sendingValue = 0;
     do {
-        slice $receiver = __tact_dict_get_int_slice($msg'user_list, 257, $value_default);
-        int $value_send = __tact_dict_get_int_int($msg'sending_value, 257, $value_default, 257);
+        slice $receiver = __tact_dict_get_int_slice($msg'ton_user_list, 257, $value_default);
+        int $value_send = __tact_dict_get_int_int($msg'ton_sending_value, 257, $value_default, 257);
         $sendingValue = (__tact_not_null($value_send) + $sendingValue);
         $send(__gen_constructor_SendParameters$to_value_mode_bounce(__tact_not_null($receiver), __tact_not_null($value_send), 2, false));
         $value_default = ($value_default + 1);
     } until (($value_default > $msg'length));
-    $send(__gen_constructor_SendParameters$to_value_mode_bounce_body($ctx'sender, ($msgValue - $sendingValue), 2, false, $__gen_String_asComment(__gen_str_339420938())));
+    $self~$__gen_Airdrop_completed($ctx'sender, ($msgValue - $sendingValue));
     return ($self, ());
 }
 
@@ -236,8 +314,15 @@ cell $__gen_String_asComment(slice $self) impure inline_ref {
         return (self, true);
     }
     
+    ;; Receive JettonAirdrop message
+    if (op == 4369) {
+        var msg = in_msg~__gen_read_JettonAirdrop();
+        self~$__gen_Airdrop_receive_JettonAirdrop(msg);
+        return (self, true);
+    }
+    
     ;; Receive AirdropTON_Without_Comment message
-    if (op == 2107066889) {
+    if (op == 827956158) {
         var msg = in_msg~__gen_read_AirdropTON_Without_Comment();
         self~$__gen_Airdrop_receive_AirdropTON_Without_Comment(msg);
         return (self, true);
@@ -283,7 +368,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() {
-    return "ipfs://QmU9Dm5YgmnhRiePhpqTiuFBqbSchbM3A3dTLvY9cSgVQR";
+    return "ipfs://QmTPzMiPh1AZNEuNR5ukMfoAGubA2uWEPSJ1FuvUZG9wYu";
 }
 
 _ lazy_deployment_completed() {

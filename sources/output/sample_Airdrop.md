@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: Airdrop
-BOC Size: 678 bytes
+BOC Size: 921 bytes
 
 # Types
-Total Types: 4
+Total Types: 6
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -18,8 +18,16 @@ TLB: `_ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Ma
 Signature: `SendParameters{bounce:bool,to:address,value:int257,mode:int257,body:Maybe ^cell,code:Maybe ^cell,data:Maybe ^cell}`
 
 ## AirdropTON_Without_Comment
-TLB: `airdrop_ton_without_comment#7d974a09 length:int257 user_list:dict<int, address> sending_value:dict<int, int> = AirdropTON_Without_Comment`
-Signature: `AirdropTON_Without_Comment{length:int257,user_list:dict<int, address>,sending_value:dict<int, int>}`
+TLB: `airdrop_ton_without_comment#31599bbe length:int257 ton_user_list:dict<int, address> ton_sending_value:dict<int, int> = AirdropTON_Without_Comment`
+Signature: `AirdropTON_Without_Comment{length:int257,ton_user_list:dict<int, address>,ton_sending_value:dict<int, int>}`
+
+## JettonAirdrop
+TLB: `jetton_airdrop#00001111 length:int257 sender_jetton_wallet:address jetton_user_list:dict<int, address> jetton_sending_value:dict<int, int> = JettonAirdrop`
+Signature: `JettonAirdrop{length:int257,sender_jetton_wallet:address,jetton_user_list:dict<int, address>,jetton_sending_value:dict<int, int>}`
+
+## TokenTransfer
+TLB: `token_transfer#0f8a7ea5 queryId:uint64 amount:coins destination:address response_destination:address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer`
+Signature: `TokenTransfer{queryId:uint64,amount:coins,destination:address,response_destination:address,custom_payload:Maybe ^cell,forward_ton_amount:coins,forward_payload:remainder<slice>}`
 
 # Get Methods
 Total Get Methods: 0
